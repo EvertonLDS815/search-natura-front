@@ -1,0 +1,16 @@
+.header .user-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    background-color: #aaa;
+    width: 63px;
+    height: 63px;
+    border-radius: 50%;
+}
+
+.user-image-container img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}

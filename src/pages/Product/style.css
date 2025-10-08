@@ -1,0 +1,5 @@
+.content-product-info img {
+  display: flex;
+  width: 200px;
+  gap: 8px;
+}
