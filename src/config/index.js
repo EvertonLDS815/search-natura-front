@@ -4,7 +4,7 @@ import { redirectToLogin } from '../utils/redirect';
 // Cria a instância do axios com a baseURL
 const token = localStorage.getItem('user');
 const api = axios.create({
-  baseURL: 'http://10.0.0.110:3000/',
+  baseURL: 'https://search-natura.vercel.app/',
   headers: { Authorization: `Bearer ${token}` },
 });
 

@@ -24,7 +24,6 @@ const Product = () => {
   const fetchCategories = async () => {
     try {
       const { data } = await api.get('/categories');
-      console.log(data)
       setCategories(data);
     } catch (error) {
       console.error('Erro ao buscar categorias:', error);
@@ -52,7 +51,7 @@ const Product = () => {
     <>
       <Header />
 
-      <div className="division">
+      <div className="search">
         <select onChange={handleSelectChange} defaultValue="">
           <option value="" disabled>
             Selecione uma categoria

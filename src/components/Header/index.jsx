@@ -15,7 +15,6 @@ const Header = () => {
   const fetchUser = async () => {
     try {
       const { data } = await api.get('/user');
-      console.log('Usuário autenticado:', data);
       setUser(Array.isArray(data) ? data : [data]); // garante formato array
     } catch (error) {
       console.error('Erro ao buscar usuário:', error);
@@ -31,7 +30,7 @@ const Header = () => {
   if (user.length === 0) {
     return (
       <header className="header">
-        <h2>Carregando...</h2>
+        <h3>Carregando...</h3>
       </header>
     );
   }
@@ -39,23 +38,25 @@ const Header = () => {
   const currentUser = user[0]; // pega o primeiro usuário
 
   return (
-    <header className="header">
-      {currentUser?.imageURL && (
-        <div className="user-image-container">
-            <img
-              src={currentUser.imageURL}
-              alt={currentUser.name || 'Usuário'}
-              className="user-image"
-              />
-          </div>
-      )}
-      <h2
-        style={{ cursor: 'pointer' }}
-        onClick={() => navigate('/products')}
-      >
-        {currentUser?.name || 'Usuário'}
-      </h2>
-      <button onClick={handleLogout}>
+    <header>
+      <div className="user-info">
+        {currentUser?.imageURL && (
+          <div className="user-image-container">
+              <img
+                src={currentUser.imageURL}
+                alt={currentUser.name || 'Usuário'}
+                className="user-image"
+                />
+            </div>
+        )}
+        <h2
+          style={{ cursor: 'pointer' }}
+          onClick={() => navigate('/products')}
+        >
+          {currentUser?.name || 'Usuário'}
+        </h2>
+      </div>
+      <button onClick={handleLogout} className="logout-button">
         <img src={logOut} alt="Sair" />
       </button>
     </header>

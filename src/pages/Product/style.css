@@ -1,5 +1,57 @@
-.content-product-info img {
+/* ====== ÁREA DE BUSCA (CATEGORIAS) ====== */
+.search {
   display: flex;
-  width: 200px;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 7rem auto 2rem;
+  padding: 1rem 2rem;
+  width: 90%;
+  max-width: 800px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.search:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.search select {
+  flex: 1;
+  padding: 12px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+  color: #333;
+  cursor: pointer;
+}
+
+.search select:focus {
+  border-color: #007bff;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+/* ====== CONTAINER DE PRODUTOS ====== */
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  padding: 1rem 2rem 3rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+@media (max-width: 620px) {
+  .container {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    padding: 1rem;
+  }
 }

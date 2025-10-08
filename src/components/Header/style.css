@@ -1,16 +1,51 @@
-.header .user-image-container {
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: white;
+    border-bottom: 1px solid #dcfce7;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-image-container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 10px;
-    background-color: #aaa;
-    width: 63px;
-    height: 63px;
+    background-color: #1bbc57;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
+}
+.user-info {
+    display: flex;
+    align-items: center;
+}
+.user-info h2 {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0;
 }
 
 .user-image-container img {
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
+}
+
+.logout-button {
+    background-color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button img {
+    width: 35px;
+    height: 35px;
 }

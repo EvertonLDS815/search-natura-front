@@ -1,0 +1,68 @@
+.content-product {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.content-product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.content-product-info {
+  text-align: center;
+  width: 100%;
+}
+
+.content-product-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+}
+
+.content-product-info img {
+  width: 100%; /* controla o tamanho da imagem */
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.content-product:hover img {
+  transform: scale(1.05);
+}
+
+.content-product-info span {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #007bff;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.content-product-actions {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+.btn-delete {
+  border: none;
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-delete img {
+  width: 20px;
+  height: 20px;
+}
