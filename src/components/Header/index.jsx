@@ -31,6 +31,9 @@ const Header = () => {
     return (
       <header className="header">
         <h3>Carregando...</h3>
+        <button onClick={handleLogout} className="logout-button">
+          <img src={logOut} alt="Sair" />
+        </button>
       </header>
     );
   }
@@ -39,23 +42,32 @@ const Header = () => {
 
   return (
     <header>
-      <div className="user-info">
-        {currentUser?.imageURL && (
-          <div className="user-image-container">
+      {user.length === 0 ? (
+        <>
+          <h3>Carregando...</h3>
+          <button onClick={handleLogout} className="logout-button">
+            <img src={logOut} alt="Sair" />
+          </button>
+        </>
+      ) : (
+        <div className="user-info">
+          {currentUser?.imageURL && (
+            <div className="user-image-container">
               <img
                 src={currentUser.imageURL}
                 alt={currentUser.name || 'Usuário'}
                 className="user-image"
-                />
+              />
             </div>
-        )}
-        <h2
-          style={{ cursor: 'pointer' }}
-          onClick={() => navigate('/products')}
-        >
-          {currentUser?.name || 'Usuário'}
-        </h2>
-      </div>
+          )}
+          <h2
+            style={{ cursor: 'pointer' }}
+            onClick={() => navigate('/products')}
+          >
+            {currentUser?.name || 'Usuário'}
+          </h2>
+        </div>
+       )}
       <button onClick={handleLogout} className="logout-button">
         <img src={logOut} alt="Sair" />
       </button>

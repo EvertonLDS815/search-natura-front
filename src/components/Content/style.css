@@ -24,7 +24,6 @@
   font-weight: 600;
   color: #333;
   margin-bottom: 0.5rem;
-  text-transform: capitalize;
 }
 
 .content-product-info img {
@@ -39,7 +38,15 @@
   transform: scale(1.05);
 }
 
-.content-product-info span {
+.content-product-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: inherit;
+  width: 100%;
+  margin-top: 0.8rem;
+}
+
+.content-product-actions span {
   font-weight: bold;
   font-size: 1rem;
   color: #007bff;
@@ -47,19 +54,11 @@
   margin-top: 0.25rem;
 }
 
-.content-product-actions {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0.8rem;
-}
-
 .btn-delete {
   border: none;
   border-radius: 10px;
   padding: 0.4rem 0.6rem;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
 .btn-delete img {

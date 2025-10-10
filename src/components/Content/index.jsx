@@ -26,10 +26,12 @@
       <div key={product._id} className="content-product">
         <div className="content-product-info">
           <h3>{product.name}</h3>
-          <img src={product.imageURL} alt={product.name} />
-          <span>{FormatCurrency(product.price)}</span>
+          <a href={product.imageURL} target="_blank" rel="noopener noreferrer">
+            <img src={product.imageURL} alt={product.name} />
+          </a>
         </div>
         <div className="content-product-actions">
+          <span>{FormatCurrency(product.price)}</span>
           <button className="btn-delete" onClick={handleDelete}>
             <img src={Trash} alt="Excluir" />
           </button>

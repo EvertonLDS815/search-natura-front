@@ -1,6 +1,5 @@
 // Product.js
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import api from '../../config';
 import './style.css';
 import Content from '../../components/Content';
@@ -8,19 +7,22 @@ import Header from '../../components/Header';
 
 const Product = () => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([])
-  const navigate = useNavigate();
+  const [filteredProducts, setFilteredProducts] = useState([]); // ← produtos filtrados
+  const [categories, setCategories] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(''); // ← termo digitado
 
-  // Função para buscar os pedidos
+  // Buscar todos os produtos
   const fetchProducts = async () => {
     try {
       const { data } = await api.get('/products');
       setProducts(data);
+      setFilteredProducts(data); // inicia com todos
     } catch (error) {
-      console.error('Erro ao buscar pedidos:', error);
+      console.error('Erro ao buscar produtos:', error);
     }
   };
 
+  // Buscar categorias
   const fetchCategories = async () => {
     try {
       const { data } = await api.get('/categories');
@@ -29,33 +31,76 @@ const Product = () => {
       console.error('Erro ao buscar categorias:', error);
     }
   };
-  
-  // Executa apenas uma vez ao montar o componente
+
   useEffect(() => {
     fetchCategories();
     fetchProducts();
   }, []);
 
-  // Lida com o select
+  // Buscar produtos por categoria
+  function fetchProductsByCategory(categoryId) {
+    api.get(`/products/category/${categoryId}`)
+      .then(({ data }) => {
+        setProducts(data);
+        setFilteredProducts(data);
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar produtos por categoria:', error);
+      });
+  }
+
+  // Filtro por categoria
   const handleSelectChange = (e) => {
     const value = e.target.value;
-
-    if (value === 'product') {
-      navigate('/products');
-    } else if (value === 'user') {
-      navigate('/users');
+    if (value === 'all') {
+      fetchProducts();
+    } else {
+      const categoryId = categories[value - 1]._id;
+      fetchProductsByCategory(categoryId);
     }
+  };
+
+  // Filtro por nome (input)
+  const handleSearchChange = (e) => {
+    const term = e.target.value.toLowerCase();
+    setSearchTerm(term);
+
+    const filtered = products.filter((product) =>
+      product.name.toLowerCase().includes(term)
+    );
+    setFilteredProducts(filtered);
   };
 
   return (
     <>
       <Header />
 
+      <div className="title-home">
+        <h1>Produtos <span>Naturais</span></h1>
+        <p>Descubra nossa seleção especial de produtos sustentáveis e ecológicos</p>
+      </div>
+
       <div className="search">
-        <select onChange={handleSelectChange} defaultValue="">
-          <option value="" disabled>
-            Selecione uma categoria
-          </option>
+        <form className="relative-input" onSubmit={(e) => e.preventDefault()}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round"
+            className="lucide lucide-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4"
+            aria-hidden="true">
+            <path d="m21 21-4.34-4.34"></path>
+            <circle cx="11" cy="11" r="8"></circle>
+          </svg>
+          <input
+            type="text"
+            name="input-product"
+            placeholder="Digite um produto"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </form>
+
+        <select name="category" id="category" onChange={handleSelectChange} defaultValue="">
+          <option key={0} value="all">Todos</option>
           {categories.map((category, index) => (
             <option key={category._id} value={index + 1}>
               {category.name}
@@ -65,9 +110,15 @@ const Product = () => {
       </div>
 
       <div className="container">
-        {products.map((product) => (
-          <Content key={product._id} product={product} onFetchProducts={fetchProducts} />
-        ))}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <Content key={product._id} product={product} onFetchProducts={fetchProducts} />
+          ))
+        ) : (
+          <p style={{ textAlign: 'center', width: '100%', marginTop: '1rem' }}>
+            Nenhum produto encontrado.
+          </p>
+        )}
       </div>
     </>
   );
