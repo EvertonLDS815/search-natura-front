@@ -32,10 +32,6 @@
   transition: all 0.3s ease;
 }
 
-.search:hover {
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
 .search select {
   padding: 10px;
   font-size: 1rem;
@@ -96,6 +92,7 @@
   padding: 1rem 2rem 3rem;
   width: 100%;
   box-sizing: border-box;
+  justify-items: center;;
 }
 
 

@@ -58,6 +58,7 @@ const Product = () => {
       const categoryId = categories[value - 1]._id;
       fetchProductsByCategory(categoryId);
     }
+    setSearchTerm(''); // limpa o input ao mudar a categoria
   };
 
   // Filtro por nome (input)
