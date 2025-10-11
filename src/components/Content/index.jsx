@@ -32,7 +32,7 @@
         </div>
         <div className="content-product-actions">
           <span>{FormatCurrency(product.price)}</span>
-          <button onClick={() => addToCart(product)}>Adicionar ao carrinho</button>
+          <button className="btn-add-cart" onClick={() => addToCart(product)}>+</button>
         </div>
       </div>
     </>

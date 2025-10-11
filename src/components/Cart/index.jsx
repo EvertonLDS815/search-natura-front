@@ -2,10 +2,11 @@ import { useContext, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import cartIcon from "../../assets/cart-icon.png";
 import formatCurrency from "../../utils/FormatCurrency";
+import Trash from "../../assets/trash.svg";
 import "./style.css"; // CSS para dropdown
 
 const Cart = () => {
-  const { cart } = useContext(CartContext);
+  const { cart, removeFromCart } = useContext(CartContext);
   const [open, setOpen] = useState(false);
 
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
@@ -25,8 +26,14 @@ const Cart = () => {
             <ul>
               {cart.map((item) => (
                 <li key={item._id}>
+                  <div className="cart-item-info">
                   <img src={item.imageURL} alt={item.name} className="cart-item-image" />
-                  {item.name} x {item.quantity} - <strong>{formatCurrency(item.price * item.quantity)}</strong>
+                  {item.quantity}x {item.name} 
+                  <button className="remove-item-btn" onClick={() => removeFromCart(item._id)}>
+                    <img src={Trash} />
+                  </button>
+                  </div>
+                  <strong>{formatCurrency(item.price * item.quantity)}</strong>
                 </li>
               ))}
             </ul>
