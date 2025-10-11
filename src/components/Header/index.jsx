@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import logOut from '../../assets/log-out.svg';
 import { useEffect, useState } from "react";
-import './style.css';
 import api from "../../config";
+import logOut from "../../assets/log-out.svg";
+import menuIcon from "../../assets/menu.svg"; // ícone de menu simples
+import "./style.css";
+import Cart from "../Cart";
 
 const Header = () => {
-  const [user, setUser] = useState([]); // começa vazio
+  const [user, setUser] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,63 +17,51 @@ const Header = () => {
 
   const fetchUser = async () => {
     try {
-      const { data } = await api.get('/user');
-      setUser(Array.isArray(data) ? data : [data]); // garante formato array
+      const { data } = await api.get("/user");
+      setUser(Array.isArray(data) ? data[0] : data);
     } catch (error) {
-      console.error('Erro ao buscar usuário:', error);
+      console.error("Erro ao buscar usuário:", error);
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    navigate('/login');
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
-  // Se ainda não carregou o usuário, evita erro
-  if (user.length === 0) {
-    return (
-      <header className="header">
-        <h3>Carregando...</h3>
+  return (
+    <header className="header">
+      {/* Esquerda */}
+      <div className="header-left" onClick={() => navigate("/profile")}>
+        {user?.imageURL ? (
+          <img
+            src={user.imageURL}
+            alt={user.name}
+            className="user-image"
+          />
+        ) : (
+          <div className="user-placeholder"></div>
+        )}
+        <span>{user?.name || "Usuário"}</span>
+      </div>
+
+      {/* Centro */}
+      <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+        <a href="/products">Produtos</a>
+        <a href="/categories">Categorias</a>
+        <a href="/users">Usuários</a>
+      </nav>
+
+      {/* Direita */}
+      <div className="header-right">
+        <Cart />
         <button onClick={handleLogout} className="logout-button">
           <img src={logOut} alt="Sair" />
         </button>
-      </header>
-    );
-  }
-
-  const currentUser = user[0]; // pega o primeiro usuário
-
-  return (
-    <header>
-      {user.length === 0 ? (
-        <>
-          <h3>Carregando...</h3>
-          <button onClick={handleLogout} className="logout-button">
-            <img src={logOut} alt="Sair" />
-          </button>
-        </>
-      ) : (
-        <div className="user-info">
-          {currentUser?.imageURL && (
-            <div className="user-image-container">
-              <img
-                src={currentUser.imageURL}
-                alt={currentUser.name || 'Usuário'}
-                className="user-image"
-              />
-            </div>
-          )}
-          <h2
-            style={{ cursor: 'pointer' }}
-            onClick={() => navigate('/products')}
-          >
-            {currentUser?.name || 'Usuário'}
-          </h2>
-        </div>
-       )}
-      <button onClick={handleLogout} className="logout-button">
-        <img src={logOut} alt="Sair" />
-      </button>
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+          <img src={menuIcon} alt="Menu" />
+        </button>
+      </div>
     </header>
   );
 };

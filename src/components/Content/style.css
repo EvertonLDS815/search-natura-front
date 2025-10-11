@@ -55,14 +55,13 @@
   margin-top: 0.25rem;
 }
 
-.btn-delete {
+.btn-add-cart {
+  background-color: #28a745;
+  color: white;
   border: none;
-  border-radius: 10px;
-  padding: 0.4rem 0.6rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
-}
-
-.btn-delete img {
-  width: 20px;
-  height: 20px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
 }

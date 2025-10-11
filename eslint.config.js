@@ -23,6 +23,9 @@ export default defineConfig([
       },
     },
     rules: {
+      'react-refresh/only-export-components': 'warn',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
   },

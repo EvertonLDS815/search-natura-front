@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './style.css';
 import api from '../../config';
 import IconUser from '../../assets/user-icon.svg';
+import El2 from '../../assets/El-2.png';
 
 const Login = () => {
   const [login, setLogin] = useState('');
@@ -32,7 +33,7 @@ const Login = () => {
     <div className="container-login">
       <form onSubmit={handleSubmit} className="login-form">
         <div className="icon-div">
-          <img src={IconUser} alt="Icon" />
+          <img src={El2} alt="Icon" />
         </div>
         <h3>Área administrativa</h3>
         <span>Faça login para gerenciar produtos</span>

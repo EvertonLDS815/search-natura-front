@@ -5,26 +5,29 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import Product from './pages/Product';
 import Order from './pages/Order';
+import { CartProvider } from './context/CartContext';
 
 const App = () => {
   const token = localStorage.getItem('user');
 
   return (
     <Router>
-      <Routes>
-        {/* Redireciona automaticamente com base no token */}
-        <Route
-          path="/"
-          element={
-            token ? <Navigate to="/products" replace /> : <Navigate to="/login" replace />
-          }
-        />
+      <CartProvider>
+        <Routes>
+          {/* Redireciona automaticamente com base no token */}
+          <Route
+            path="/"
+            element={
+              token ? <Navigate to="/products" replace /> : <Navigate to="/login" replace />
+            }
+          />
 
-        {/* Rotas públicas e privadas */}
-        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-        <Route path="/tables" element={<PrivateRoute><Order /></PrivateRoute>} />
-        <Route path="/products" element={<PrivateRoute><Product /></PrivateRoute>} />
-      </Routes>
+          {/* Rotas públicas e privadas */}
+          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+          <Route path="/tables" element={<PrivateRoute><Order /></PrivateRoute>} />
+          <Route path="/products" element={<PrivateRoute><Product /></PrivateRoute>} />
+        </Routes>
+      </CartProvider>
     </Router>
   );
 };

@@ -31,6 +31,11 @@
     margin: 0 auto 1rem;
 }
 
+.login-form .icon-div img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
 .login-form h3 {
     font-size: 1.3rem;
     font-weight: 500;
