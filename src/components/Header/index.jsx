@@ -2,13 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../config";
 import logOut from "../../assets/log-out.svg";
-import menuIcon from "../../assets/menu.svg"; // ícone de menu simples
+import menuIcon from "../../assets/menu.svg";
 import "./style.css";
 import Cart from "../Cart";
 
 const Header = () => {
   const [user, setUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false); // controle do mini-cart
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,16 +30,22 @@ const Header = () => {
     navigate("/login");
   };
 
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+    if (!menuOpen) setCartOpen(false); // fecha o cart se abrir o menu
+  };
+
+  const toggleCart = () => {
+    setCartOpen(!cartOpen);
+    if (!cartOpen) setMenuOpen(false); // fecha o menu se abrir o cart
+  };
+
   return (
     <header className="header">
       {/* Esquerda */}
       <div className="header-left" onClick={() => navigate("/profile")}>
         {user?.imageURL ? (
-          <img
-            src={user.imageURL}
-            alt={user.name}
-            className="user-image"
-          />
+          <img src={user.imageURL} alt={user.name} className="user-image" />
         ) : (
           <div className="user-placeholder"></div>
         )}
@@ -54,11 +61,11 @@ const Header = () => {
 
       {/* Direita */}
       <div className="header-right">
-        <Cart />
+        <Cart open={cartOpen} setOpen={toggleCart} /> {/* passar estado e toggle */}
         <button onClick={handleLogout} className="logout-button">
           <img src={logOut} alt="Sair" />
         </button>
-        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+        <button className="menu-toggle" onClick={toggleMenu}>
           <img src={menuIcon} alt="Menu" />
         </button>
       </div>

@@ -20,15 +20,20 @@
 
 .cart-dropdown {
   position: absolute;
-  right: -50px;
-  top: 36px;
-  width: 500px;
+  right: 0;
+  top: 36px; /* ajusta conforme seu header */
+  width: 250px; /* largura do dropdown */
+  max-height: 300px; /* altura máxima antes de ativar scroll */
   background: white;
   border: 1px solid #ddd;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   padding: 10px;
   z-index: 100;
+  overflow-y: auto; /* ativa scroll vertical */
+  overflow-x: hidden; /* evita scroll horizontal */
+  border-radius: 8px;
 }
+
 
 .cart-dropdown ul {
   list-style: none;
