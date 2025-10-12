@@ -90,6 +90,10 @@
   height: 28px;
 }
 
+.a-logout {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .nav-links {
     display: none;
@@ -109,6 +113,14 @@
   }
 
   .menu-toggle {
+    display: block;
+  }
+
+  .logout-button {
+    display: none;
+  }
+
+  .a-logout {
     display: block;
   }
 }

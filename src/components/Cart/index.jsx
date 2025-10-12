@@ -26,12 +26,14 @@ const Cart = ({ open, setOpen }) => {
               {cart.map((item) => (
                 <li key={item._id}>
                   <div className="cart-item-info">
-                    <img
-                      src={item.imageURL}
-                      alt={item.name}
-                      className="cart-item-image"
-                    />
-                    {item.quantity}x {item.name}
+                    <div>
+                      <img
+                        src={item.imageURL}
+                        alt={item.name}
+                        className="cart-item-image"
+                        />
+                      {item.quantity}x {item.name}
+                    </div>
                     <button
                       className="remove-item-btn"
                       onClick={() => removeFromCart(item._id)}
