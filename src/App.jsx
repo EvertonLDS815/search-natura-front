@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 
 // Import Components
 import Login from './pages/Login';
-import Product from './pages/Product';
+import Home from './pages/Home';
 import Order from './pages/Order';
+import Product from './pages/Product';
 import { CartProvider } from './context/CartContext';
 
 const App = () => {
@@ -18,13 +19,14 @@ const App = () => {
           <Route
             path="/"
             element={
-              token ? <Navigate to="/products" replace /> : <Navigate to="/login" replace />
+              token ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />
             }
           />
 
           {/* Rotas públicas e privadas */}
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/tables" element={<PrivateRoute><Order /></PrivateRoute>} />
+          <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
           <Route path="/products" element={<PrivateRoute><Product /></PrivateRoute>} />
         </Routes>
       </CartProvider>
@@ -41,7 +43,7 @@ const PrivateRoute = ({ children }) => {
 // 🔓 Rota pública (se tiver token, redireciona)
 const PublicRoute = ({ children }) => {
   const token = localStorage.getItem('user');
-  return token ? <Navigate to="/products" replace /> : children;
+  return token ? <Navigate to="/home" replace /> : children;
 };
 
 export default App;

@@ -54,9 +54,10 @@ const Header = () => {
 
       {/* Centro */}
       <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+        <a href="/home">Home</a>
         <a href="/products">Produtos</a>
+        <a href="/profile">Usuários</a>
         <a href="/categories">Categorias</a>
-        <a href="/users">Usuários</a>
         <a href="/login" onClick={handleLogout} className="a-logout">Sair</a>
       </nav>
 
