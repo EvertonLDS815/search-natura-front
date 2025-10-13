@@ -113,7 +113,7 @@ const Product = () => {
       <div className="container">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
-            <Content key={product._id} product={product} onFetchProducts={fetchProducts} />
+            <Content key={product._id} product={product} onFetchProducts={fetchProducts} mode="cart" />
           ))
         ) : (
           <p style={{ textAlign: 'center', width: '100%', marginTop: '1rem' }}>
