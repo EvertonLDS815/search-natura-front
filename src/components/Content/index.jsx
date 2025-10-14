@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../../config";
 import FormatCurrency from "../../utils/FormatCurrency";
 import { CartContext } from "../../context/CartContext";
@@ -6,29 +7,29 @@ import trashIcon from "../../assets/trash.svg";
 import editIcon from "../../assets/edit.svg";
 import "./style.css";
 
-const Content = ({ product, mode, onFetchProducts }) => {
+const Content = ({ product, mode = "cart", onFetchProducts }) => {
   const { addToCart } = useContext(CartContext);
+  const navigate = useNavigate();
 
   const handleDelete = async () => {
     if (window.confirm(`Tem certeza que deseja excluir o produto "${product.name}"?`)) {
       try {
         await api.delete(`/product/${product._id}`);
-        alert('Produto excluído com sucesso!');
-        if (onFetchProducts) onFetchProducts(); // Atualiza a lista de produtos
+        alert("✅ Produto excluído com sucesso!");
+        if (onFetchProducts) onFetchProducts(); // Atualiza lista se vier da página de admin
       } catch (error) {
-        console.error('Erro ao excluir produto:', error);
-        alert('Erro ao excluir o produto. Tente novamente.');
+        console.error("Erro ao excluir produto:", error);
+        alert("❌ Erro ao excluir o produto. Tente novamente.");
       }
     }
   };
 
   const handleEdit = () => {
-    // Aqui você pode redirecionar para uma página de edição
-    window.location.href = `/edit-product/${product._id}`;
+    navigate(`/edit-product/${product._id}`);
   };
 
   return (
-    <div key={product._id} className="content-product">
+    <div className="content-product">
       <div className="content-product-info">
         <h3>{product.name}</h3>
         <a href={product.imageURL} target="_blank" rel="noopener noreferrer">
@@ -40,20 +41,24 @@ const Content = ({ product, mode, onFetchProducts }) => {
         <span>{FormatCurrency(product.price)}</span>
 
         {mode === "cart" && (
-          <button className="btn-add-cart" onClick={() => addToCart(product)}>+</button>
+          <button
+            className="btn-add-cart"
+            onClick={() => addToCart(product)}
+            title="Adicionar ao carrinho"
+          >
+            +
+          </button>
         )}
 
         {mode === "admin" && (
-          <>
-          <div>
-            <button className="btn-edit" onClick={handleEdit}>
+          <div className="admin-buttons">
+            <button className="btn-edit" onClick={handleEdit} title="Editar produto">
               <img src={editIcon} alt="Editar" />
             </button>
-            <button className="btn-delete" onClick={handleDelete}>
+            <button className="btn-delete" onClick={handleDelete} title="Excluir produto">
               <img src={trashIcon} alt="Excluir" />
             </button>
           </div>
-          </>
         )}
       </div>
     </div>

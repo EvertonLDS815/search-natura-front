@@ -43,7 +43,7 @@ const Header = () => {
   return (
     <header className="header">
       {/* Esquerda */}
-      <div className="header-left" onClick={() => navigate("/profile")}>
+      <div className="header-left" onClick={() => navigate("/home")}>
         {user?.imageURL ? (
           <img src={user.imageURL} alt={user.name} className="user-image" />
         ) : (
@@ -56,7 +56,7 @@ const Header = () => {
       <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
         <a href="/home">Home</a>
         <a href="/products">Produtos</a>
-        <a href="/profile">Usuários</a>
+        <a href="/profile">Perfil</a>
         <a href="/categories">Categorias</a>
         <a href="/login" onClick={handleLogout} className="a-logout">Sair</a>
       </nav>

@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Order from './pages/Order';
 import Product from './pages/Product';
+import EditProduct from './pages/EditProduct';
 import { CartProvider } from './context/CartContext';
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
           <Route path="/tables" element={<PrivateRoute><Order /></PrivateRoute>} />
           <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
           <Route path="/products" element={<PrivateRoute><Product /></PrivateRoute>} />
+          <Route path="/edit-product/:id" element={<PrivateRoute><EditProduct /></PrivateRoute>} />
         </Routes>
       </CartProvider>
     </Router>
