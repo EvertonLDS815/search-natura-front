@@ -12,7 +12,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
   e.preventDefault();
   try {
     const { data } = await api.post('/login', { login, password });
@@ -21,7 +21,7 @@ const Login = () => {
     localStorage.setItem('user', data.token);
 
     // Redireciona
-    navigate('/products', { replace: true });
+    navigate('/home', { replace: true });
   } catch (err) {
     console.error('Erro completo do login:', err);
     alert(err.response?.data?.error || 'Erro ao fazer login');
@@ -31,7 +31,7 @@ const Login = () => {
 
   return (
     <div className="container-login">
-      <form onSubmit={handleSubmit} className="login-form">
+      <form onSubmit={handleLogin} className="login-form">
         <div className="icon-div">
           <img src={El2} alt="Icon" />
         </div>
