@@ -49,7 +49,7 @@ const Product = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleCreateProduct = async (e) => {
     e.preventDefault();
     if (!name || !price || !image || !category) {
       alert("Preencha todos os campos!");
@@ -74,6 +74,7 @@ const Product = () => {
       setCategory("");
       setImage(null);
       setPreview(null);
+      fetchProducts();
     } catch (error) {
       console.error("❌ Erro ao cadastrar produto:", error);
       alert("Erro ao cadastrar produto.");
@@ -118,7 +119,7 @@ const Product = () => {
       <div className="product-page">
         <h2>Cadastrar Produto</h2>
 
-        <form className="product-form" onSubmit={handleSubmit}>
+        <form className="product-form" onSubmit={handleCreateProduct}>
           <label htmlFor="name">Nome do Produto</label>
           <input
             id="name"
