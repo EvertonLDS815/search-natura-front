@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 // Import Components
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Order from './pages/Order';
+import Profile from './pages/Profile';
 import Product from './pages/Product';
 import EditProduct from './pages/EditProduct';
 import { CartProvider } from './context/CartContext';
@@ -26,7 +26,7 @@ const App = () => {
 
           {/* Rotas públicas e privadas */}
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-          <Route path="/tables" element={<PrivateRoute><Order /></PrivateRoute>} />
+          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
           <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
           <Route path="/products" element={<PrivateRoute><Product /></PrivateRoute>} />
           <Route path="/edit-product/:id" element={<PrivateRoute><EditProduct /></PrivateRoute>} />

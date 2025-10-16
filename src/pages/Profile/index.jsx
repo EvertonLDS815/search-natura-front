@@ -1,5 +1,6 @@
-// Product.js
+import Header from "../../components/Header";
 
+// Product.js
 const Product = () => {
   return (
     <>

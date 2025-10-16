@@ -86,6 +86,7 @@ const Product = () => {
   function fetchProductsByCategory(categoryId) {
     api.get(`/products/category/${categoryId}`)
       .then(({ data }) => {
+        setProducts(data);
         setFilteredProducts(data);
       })
       .catch((error) => {
@@ -101,6 +102,7 @@ const Product = () => {
       const categoryId = categories[value - 1]._id;
       fetchProductsByCategory(categoryId);
     }
+    setSearchTerm('');
   };
 
   const handleSearchChange = (e) => {
@@ -197,9 +199,9 @@ const Product = () => {
           </svg>
           <input
             type="text"
+            name="input-product"
             placeholder="Buscar produto pelo nome..."
             value={searchTerm}
-
             onChange={handleSearchChange}
           />
         </form>

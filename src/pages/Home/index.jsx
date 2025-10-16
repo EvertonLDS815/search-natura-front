@@ -5,7 +5,7 @@ import './style.css';
 import Content from '../../components/Content';
 import Header from '../../components/Header';
 
-const Product = () => {
+const Home = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]); // ← produtos filtrados
   const [categories, setCategories] = useState([]);
@@ -125,4 +125,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Home;
