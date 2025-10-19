@@ -1,48 +1,49 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import api from "../../config";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/UserContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import Cart from "../Cart";
 import logOut from "../../assets/log-out.svg";
 import menuIcon from "../../assets/menu.svg";
 import "./style.css";
-import Cart from "../Cart";
 
 const Header = () => {
-  const [user, setUser] = useState(null);
+  const { user, setUser } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false); // controle do mini-cart
+  const [cartOpen, setCartOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
+  // Resetar menu/cart quando mudar de rota
   useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const fetchUser = async () => {
-    try {
-      const { data } = await api.get("/user");
-      setUser(Array.isArray(data) ? data[0] : data);
-    } catch (error) {
-      console.error("Erro ao buscar usuário:", error);
-    }
-  };
+    setMenuOpen(false);
+    setCartOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
+    localStorage.removeItem("user"); // limpa o storage
+    setUser(null);                   // limpa o estado global
+    navigate("/login");              // redireciona
   };
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-    if (!menuOpen) setCartOpen(false); // fecha o cart se abrir o menu
+    setMenuOpen(prev => {
+      const newState = !prev;
+      if (newState) setCartOpen(false); // se abrir menu, fecha cart
+      return newState;
+    });
   };
 
   const toggleCart = () => {
-    setCartOpen(!cartOpen);
-    if (!cartOpen) setMenuOpen(false); // fecha o menu se abrir o cart
+    setCartOpen(prev => {
+      const newState = !prev;
+      if (newState) setMenuOpen(false); // se abrir cart, fecha menu
+      return newState;
+    });
   };
+
 
   return (
     <header className="header">
-      {/* Esquerda */}
       <div className="header-left" onClick={() => navigate("/home")}>
         {user?.imageURL ? (
           <img src={user.imageURL} alt={user.name} className="user-image" />
@@ -52,18 +53,17 @@ const Header = () => {
         <span>{user?.name || "Usuário"}</span>
       </div>
 
-      {/* Centro */}
       <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
-        <a href="/home">Home</a>
-        <a href="/products">Produtos</a>
-        <a href="/profile">Perfil</a>
-        <a href="/categories">Categorias</a>
-        <a href="/login" onClick={handleLogout} className="a-logout">Sair</a>
+        <a onClick={() => { navigate('/home'); setMenuOpen(false);}}>Home</a>
+        <a onClick={() => { navigate('/products'); setMenuOpen(false);}}>Produtos</a>
+        <a onClick={() => { navigate('/profile'); setMenuOpen(false);}}>Perfil</a>
+        <a onClick={() => { navigate('/categories'); setMenuOpen(false);}}>Categorias</a>
+
+        <a onClick={handleLogout} className="a-logout">Sair</a>
       </nav>
 
-      {/* Direita */}
       <div className="header-right">
-        <Cart open={cartOpen} setOpen={toggleCart} /> {/* passar estado e toggle */}
+        <Cart open={cartOpen} toggleOpen={toggleCart} />
         <button onClick={handleLogout} className="logout-button">
           <img src={logOut} alt="Sair" />
         </button>

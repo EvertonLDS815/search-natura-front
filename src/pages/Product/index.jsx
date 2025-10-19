@@ -118,12 +118,13 @@ const Product = () => {
   return (
     <>
       <Header />
-      <div className="product-page">
+      <div className="container-page">
         <h2>Cadastrar Produto</h2>
 
         <form className="product-form" onSubmit={handleCreateProduct}>
           <label htmlFor="name">Nome do Produto</label>
           <input
+            name="name"
             id="name"
             type="text"
             value={name}
@@ -134,6 +135,7 @@ const Product = () => {
 
           <label htmlFor="price">Preço (R$)</label>
           <input
+            name="price"
             id="price"
             type="number"
             step="0.01"
@@ -145,6 +147,7 @@ const Product = () => {
 
           <label htmlFor="category">Categoria</label>
           <select
+            name="category"
             id="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -158,9 +161,10 @@ const Product = () => {
             ))}
           </select>
 
-          <label>Imagem do Produto</label>
+          <label htmlFor="fileInput">Imagem do Produto</label>
           <div className="file-upload">
             <input
+              name="image"
               type="file"
               id="fileInput"
               accept="image/*"

@@ -8,33 +8,52 @@ import Profile from './pages/Profile';
 import Product from './pages/Product';
 import EditProduct from './pages/EditProduct';
 import { CartProvider } from './context/CartContext';
+import { UserProvider } from './context/UserContext';
+import Header from './components/Header';
 
 const App = () => {
   const token = localStorage.getItem('user');
 
   return (
     <Router>
-      <CartProvider>
-        <Routes>
-          {/* Redireciona automaticamente com base no token */}
-          <Route
-            path="/"
-            element={
-              token ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />
-            }
-          />
+      <UserProvider>
+        <CartProvider>
+          <Routes>
+            {/* Redireciona automaticamente com base no token */}
+            <Route
+              path="/"
+              element={
+                token ? <Navigate to="/home" replace /> : <Navigate to="/login" replace />
+              }
+            />
 
-          {/* Rotas públicas e privadas */}
-          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-          <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
-          <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
-          <Route path="/products" element={<PrivateRoute><Product /></PrivateRoute>} />
-          <Route path="/edit-product/:id" element={<PrivateRoute><EditProduct /></PrivateRoute>} />
-        </Routes>
-      </CartProvider>
+            {/* Rota pública: login */}
+            <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+
+            {/* Rotas privadas com Header */}
+            <Route
+              element={<PrivateLayout />} // Layout com Header
+            >
+              <Route path="/home" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/products" element={<Product />} />
+              <Route path="/edit-product/:id" element={<EditProduct />} />
+            </Route>
+          </Routes>
+        </CartProvider>
+      </UserProvider>
     </Router>
   );
 };
+
+// Layout privado com Header
+import { Outlet } from 'react-router-dom';
+const PrivateLayout = () => (
+  <>
+    <Header />
+    <Outlet />
+  </>
+);
 
 // 🔒 Rota privada (só acessa se tiver token)
 const PrivateRoute = ({ children }) => {

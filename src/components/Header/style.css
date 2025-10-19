@@ -48,6 +48,7 @@
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
+  cursor: pointer;
 }
 .nav-links a:hover {
   color: #15803d;

@@ -1,4 +1,4 @@
-.edit-product-page {
+.edit-container-page {
   width: 500px;
   margin: 7rem auto 2rem;
   padding: 1.5rem;
@@ -7,11 +7,11 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-.edit-product-page h2 {
+.edit-container-page h2 {
   font-size: 1.5rem;
   text-align: center;
   margin-bottom: 1.5rem;
-  color: green;
+  color: #16a34a;
 }
 
 .product-form {
@@ -70,7 +70,7 @@
 }
 
 @media (max-width: 600px) {
-  .edit-product-page {
+  .edit-container-page {
     width: 90vw;
     margin: 5rem auto 1rem;
     padding: 1rem;

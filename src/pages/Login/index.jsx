@@ -1,33 +1,37 @@
 // Login.js
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
 import api from '../../config';
 import IconUser from '../../assets/user-icon.svg';
 import El2 from '../../assets/El-2.png';
+import { UserContext } from '../../context/UserContext';
 
 const Login = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { fetchUser } = useContext(UserContext); // pega setUser do contexto
 
   const handleLogin = async (e) => {
-  e.preventDefault();
-  try {
-    const { data } = await api.post('/login', { login, password });
+    e.preventDefault();
+    try {
+      const { data } = await api.post("/login", { login, password });
 
-    // Salva token no localStorage
-    localStorage.setItem('user', data.token);
+      // salva token
+      localStorage.setItem("user", data.token);
 
-    // Redireciona
-    navigate('/home', { replace: true });
-  } catch (err) {
-    console.error('Erro completo do login:', err);
-    alert(err.response?.data?.error || 'Erro ao fazer login');
-    setError('Login e/ou senha inválidos!');
-  }
-};
+      // fetch do usuário logado e atualiza contexto
+      await fetchUser();   // já vai chamar setUser dentro do UserContext
+
+      navigate("/home", { replace: true });
+    } catch (err) {
+      console.error("Erro completo do login:", err);
+      alert(err.response?.data?.error || "Erro ao fazer login");
+      setError("Login e/ou senha inválidos!");
+    }
+  };
 
   return (
     <div className="container-login">
@@ -60,7 +64,7 @@ const Login = () => {
           required
         />
 
-        {error && <p className='errormessage'>{error}</p>}
+        {error && <p className="errormessage">{error}</p>}
         <button type="submit">Entrar</button>
       </form>
     </div>
