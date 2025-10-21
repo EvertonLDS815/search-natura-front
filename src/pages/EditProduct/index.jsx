@@ -81,9 +81,7 @@ const EditProduct = () => {
       formData.append("category", product.category);
       if (image) formData.append("image", image);
 
-      await api.patch(`/product/${id}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await api.patch(`/product/${id}`, formData);
 
       alert("✅ Produto atualizado com sucesso!");
       navigate("/products");

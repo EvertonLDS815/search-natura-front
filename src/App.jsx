@@ -39,6 +39,8 @@ const App = () => {
               <Route path="/products" element={<Product />} />
               <Route path="/edit-product/:id" element={<EditProduct />} />
             </Route>
+
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </CartProvider>
       </UserProvider>
@@ -48,12 +50,16 @@ const App = () => {
 
 // Layout privado com Header
 import { Outlet } from 'react-router-dom';
-const PrivateLayout = () => (
-  <>
-    <Header />
-    <Outlet />
-  </>
-);
+const PrivateLayout = ({ children }) => {
+  const token = localStorage.getItem('user');
+  if (!token) return <Navigate to="/login" replace />;
+  return (
+    <>
+      {children}
+      <Outlet />
+    </>
+  );
+};
 
 // 🔒 Rota privada (só acessa se tiver token)
 const PrivateRoute = ({ children }) => {

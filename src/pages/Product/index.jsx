@@ -64,9 +64,7 @@ const Product = () => {
       formData.append("category", category);
       formData.append("image", image);
 
-      await api.post("/product", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await api.post("/product", formData);
 
       alert("✅ Produto cadastrado com sucesso!");
       setName("");
