@@ -64,6 +64,34 @@
     outline: 2px solid #be9ccfcc;
 }
 
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* espaço para o ícone */
+}
+.toggle-password {
+  position: absolute;
+  right: 6px;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 33px;
+  height: 33px;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+/* Hover só funciona em dispositivos com mouse (PCs, notebooks) */
+@media (hover: hover) and (pointer: fine) {
+  .toggle-password:hover {
+    opacity: 1;
+  }
+}
+
 .login-form .errormessage {
     color: red;
     font-weight: 500;

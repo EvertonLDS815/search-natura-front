@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import './style.css';
 import api from '../../config';
 import El2 from '../../assets/logo.png';
+import EyeOpen from '../../assets/eye-open-shari.png';   // 👁️ ícone olho aberto
+import EyeClosed from '../../assets/eye-closed.png';
 import { UserContext } from '../../context/UserContext';
 
 const Login = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { fetchUser } = useContext(UserContext); // pega setUser do contexto
@@ -53,15 +56,23 @@ const Login = () => {
         />
 
         {/* Campo de senha */}
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="password-container">
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            name="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <img
+            src={showPassword ? EyeOpen : EyeClosed}
+            alt="Mostrar senha"
+            className="toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+          />
+        </div>
 
         {error && <p className="errormessage">{error}</p>}
         <button type="submit">Entrar</button>
