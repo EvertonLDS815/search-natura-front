@@ -57,12 +57,11 @@
     width: 100%;
     margin-bottom: 1rem;
     border-radius: 0.5rem;
-    border: none;
-    box-shadow: 0 0px 0px 3px rgb(187 247 208 / 0.8);
+    border: 2px solid #ccc;
 }
 
 .login-form input:focus-visible {
-    outline: 1px solid black;
+    outline: 2px solid #be9ccfcc;
 }
 
 .login-form .errormessage {
@@ -71,7 +70,7 @@
     margin-bottom: 0.2rem;
 }
 .login-form button {
-    background-color: #16a34a;
+    background-color: #a46db5;
     color: white;
     font-size: 1.1rem;
     padding: 10px;

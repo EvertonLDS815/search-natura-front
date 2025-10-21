@@ -3,8 +3,7 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
 import api from '../../config';
-import IconUser from '../../assets/user-icon.svg';
-import El2 from '../../assets/El-2.png';
+import El2 from '../../assets/logo.png';
 import { UserContext } from '../../context/UserContext';
 
 const Login = () => {

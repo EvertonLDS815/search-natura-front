@@ -84,6 +84,7 @@ const Profile = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              autoComplete="off"
               required
             />
           </div>
@@ -96,6 +97,7 @@ const Profile = () => {
               type="text"
               value={login}
               onChange={(e) => setLogin(e.target.value)}
+              autoComplete="off"
               required
             />
           </div>
