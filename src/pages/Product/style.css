@@ -10,7 +10,7 @@
 
 .container-page h2 {
   text-align: center;
-  color: #16a34a;
+  color: #a375ca;
   margin-bottom: 20px;
   font-size: 1.8rem;
 }
@@ -26,7 +26,7 @@
   color: #333;
 }
 .product-form label:hover span {
-  color: #16a34a;
+  color: #aa76ba;
   transition: 0.3s;
 }
 
@@ -40,14 +40,14 @@
 @media (hover: hover) and (pointer: fine) {
   /* Só aplica em dispositivos com mouse (PCs, notebooks) */
   .product-form input:hover {
-    border-color: #16a34a;
+    border-color: #aa76ba;
   }
 }
 
 .product-form input:focus {
-  border-color: #16a34a;
+  border-color: #aa76ba;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+  box-shadow: 0 0 0 2px rgb(117 22 163 / 20%);
 }
 
 .file-upload {
@@ -76,7 +76,7 @@
 
 .file-label:hover {
   background-color: #e6e6e6;
-  border-color: #16a34a;
+  border-color: #aa76ba;
   color: #16a34a;
 }
 
@@ -91,12 +91,12 @@
 }
 
 .product-form select:focus {
-  border-color: #16a34a;
+  border-color: #aa76ba;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+  box-shadow: 0 0 0 2px rgb(117 22 163 / 20%);
 }
 .product-form select:hover {
-  border-color: #16a34a;
+  border-color: #aa76ba;
 }
 
 .file-preview {

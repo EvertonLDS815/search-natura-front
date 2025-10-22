@@ -41,7 +41,7 @@ const Login = () => {
         <div className="icon-div">
           <img src={El2} alt="Icon" />
         </div>
-        <h3>Área administrativa</h3>
+        <h3>Área Administrativa</h3>
         <span>Faça login para gerenciar produtos</span>
 
         {/* Campo de login */}
