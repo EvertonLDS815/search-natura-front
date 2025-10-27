@@ -38,6 +38,7 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/products" element={<Product />} />
               <Route path="/edit-product/:id" element={<EditProduct />} />
+              <Route path="/categories" element={<Category />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/login" replace />} />
@@ -50,6 +51,7 @@ const App = () => {
 
 // Layout privado com Header
 import { Outlet } from 'react-router-dom';
+import Category from './pages/Category';
 const PrivateLayout = ({ children }) => {
   const token = localStorage.getItem('user');
   if (!token) return <Navigate to="/login" replace />;
