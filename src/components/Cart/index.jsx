@@ -9,6 +9,11 @@ const Cart = ({ open, toggleOpen }) => {
   const { cart, removeFromCart } = useContext(CartContext);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
+  // Função para retornar o preço correto (promo ou normal)
+  const getItemPrice = (item) => {
+    return item.onSale && item.salePrice ? item.salePrice : item.price;
+  };
+
   return (
     <div className="cart-container">
       <div className="cart-icon-wrapper" onClick={toggleOpen}>
@@ -33,20 +38,19 @@ const Cart = ({ open, toggleOpen }) => {
                       <img src={Trash} alt="Remover" />
                     </button>
                   </div>
-                  <strong>{formatCurrency(item.price * item.quantity)}</strong>
+                  <strong>{formatCurrency(getItemPrice(item) * item.quantity)}</strong>
                 </li>
               ))}
             </ul>
           )}
           <div className="cart-total">
             <strong>Total: </strong>
-            {formatCurrency(cart.reduce((acc, item) => acc + item.price * item.quantity, 0))}
+            {formatCurrency(cart.reduce((acc, item) => acc + getItemPrice(item) * item.quantity, 0))}
           </div>
         </div>
       )}
     </div>
   );
 };
-
 
 export default Cart;

@@ -11,6 +11,8 @@ const EditProduct = () => {
   const [product, setProduct] = useState({
     name: "",
     price: "",
+    salePrice: "",
+    onSale: false,
     category: "",
     imageURL: ""
   });
@@ -19,29 +21,31 @@ const EditProduct = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // 🔧 Busca produto e categorias ao montar
   useEffect(() => {
     fetchProduct();
     fetchCategories();
   }, [id]);
 
-  // 🔹 Busca produto e ajusta o category para _id
   const fetchProduct = async () => {
     try {
       const res = await api.get(`/product/${id}`);
       const productData = res.data;
+
+      // Converte onSale para boolean
       setProduct({
         ...productData,
-        category: productData.category?._id || productData.category || ""
+        category: productData.category?._id || productData.category || "",
+        salePrice: productData.salePrice || "",
+        onSale: productData.onSale === "true" || productData.onSale === true
       });
-      setPreview(productData.imageURL); // mostra imagem atual
+
+      setPreview(productData.imageURL);
     } catch (err) {
       console.error("Erro ao buscar produto:", err);
       alert("Erro ao carregar produto.");
     }
   };
 
-  // 🔹 Busca categorias disponíveis
   const fetchCategories = async () => {
     try {
       const { data } = await api.get("/categories");
@@ -51,7 +55,6 @@ const EditProduct = () => {
     }
   };
 
-  // 🔹 Atualiza campos do produto
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({
@@ -60,16 +63,23 @@ const EditProduct = () => {
     }));
   };
 
-  // 🔹 Atualiza imagem localmente
+  const handleToggleSale = (e) => {
+    const checked = e.target.checked;
+    setProduct((prev) => ({
+      ...prev,
+      onSale: checked,
+      salePrice: checked ? prev.salePrice : "" // limpa salePrice se desmarcado
+    }));
+  };
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      setPreview(URL.createObjectURL(file)); // mostra nova imagem
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  // 🔹 Envia atualização
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -77,16 +87,23 @@ const EditProduct = () => {
     try {
       const formData = new FormData();
       formData.append("name", product.name);
-      formData.append("price", product.price);
+      formData.append("price", Number(product.price));
       formData.append("category", product.category);
+      formData.append("onSale", product.onSale ? "true" : "false");
+
+      if (product.onSale && product.salePrice) {
+        formData.append("salePrice", Number(product.salePrice));
+      }
+
       if (image) formData.append("image", image);
 
-      await api.patch(`/product/${id}`, formData);
+      const { data } = await api.patch(`/product/${id}`, formData);
 
+      console.log("Produto atualizado:", data);
       alert("✅ Produto atualizado com sucesso!");
       navigate("/products");
     } catch (error) {
-      console.error("Erro ao atualizar produto:", error);
+      console.error("Erro ao atualizar produto:", error.response?.data || error);
       alert("❌ Falha ao atualizar o produto.");
     } finally {
       setLoading(false);
@@ -118,6 +135,31 @@ const EditProduct = () => {
             onChange={handleChange}
             required
           />
+
+          {/* Toggle de promoção */}
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={product.onSale}
+              onChange={handleToggleSale}
+            />
+            Em promoção
+            <span className="slider"></span>
+          </label>
+
+          {/* Preço promocional */}
+          {product.onSale && (
+            <>
+              <label>Preço Promocional (R$)</label>
+              <input
+                type="number"
+                step="0.01"
+                name="salePrice"
+                value={product.salePrice}
+                onChange={handleChange}
+              />
+            </>
+          )}
 
           <label>Categoria</label>
           <select

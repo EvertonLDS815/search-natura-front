@@ -52,7 +52,6 @@
   font-weight: bold;
   font-size: 1rem;
   display: block;
-  margin-top: 0.25rem;
 }
 
 .btn-add-cart {
@@ -82,4 +81,27 @@
 }
 .btn-add-cart:hover {
   background-color: #218838;
+}
+
+.price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #d32f2f;
+;
+  font-size: 0.9rem;
+}
+
+.sale-price {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.normal-price {
+  color: #333;
+  font-weight: bold;
 }

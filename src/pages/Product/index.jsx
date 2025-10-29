@@ -8,16 +8,17 @@ import Content from "../../components/Content";
 const Product = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [salePrice, setSalePrice] = useState("");
+  const [onSale, setOnSale] = useState(false);
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // ← termo digitado
-  const [products, setProducts] = useState([]); // ← todos os produtos
+  const [searchTerm, setSearchTerm] = useState("");
+  const [products, setProducts] = useState([]);
 
-  // Busca categorias do backend
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -33,11 +34,11 @@ const Product = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await api.get('/products');
+      const { data } = await api.get("/products");
       setProducts(data);
-      setFilteredProducts(data); // inicia com todos
+      setFilteredProducts(data);
     } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
+      console.error("Erro ao buscar produtos:", error);
     }
   };
 
@@ -52,7 +53,7 @@ const Product = () => {
   const handleCreateProduct = async (e) => {
     e.preventDefault();
     if (!name || !price || !image || !category) {
-      alert("Preencha todos os campos!");
+      alert("Preencha todos os campos obrigatórios!");
       return;
     }
 
@@ -63,8 +64,14 @@ const Product = () => {
       formData.append("price", price);
       formData.append("category", category);
       formData.append("image", image);
+      formData.append("onSale", onSale);
+      if (onSale && salePrice) {
+        formData.append("salePrice", salePrice);
+      }
 
-      await api.post("/product", formData);
+      await api.post("/product", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       alert("✅ Produto cadastrado com sucesso!");
       setName("");
@@ -72,6 +79,8 @@ const Product = () => {
       setCategory("");
       setImage(null);
       setPreview(null);
+      setOnSale(false);
+      setSalePrice("");
       fetchProducts();
     } catch (error) {
       console.error("❌ Erro ao cadastrar produto:", error);
@@ -82,31 +91,31 @@ const Product = () => {
   };
 
   function fetchProductsByCategory(categoryId) {
-    api.get(`/products/category/${categoryId}`)
+    api
+      .get(`/products/category/${categoryId}`)
       .then(({ data }) => {
         setProducts(data);
         setFilteredProducts(data);
       })
       .catch((error) => {
-        console.error('Erro ao buscar produtos por categoria:', error);
+        console.error("Erro ao buscar produtos por categoria:", error);
       });
   }
 
   const handleSelectChange = (e) => {
     const value = e.target.value;
-    if (value === 'all') {
+    if (value === "all") {
       fetchProducts();
     } else {
       const categoryId = categories[value - 1]._id;
       fetchProductsByCategory(categoryId);
     }
-    setSearchTerm('');
+    setSearchTerm("");
   };
 
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-
     const filtered = products.filter((product) =>
       product.name.toLowerCase().includes(term)
     );
@@ -142,6 +151,33 @@ const Product = () => {
             placeholder="Ex: 185.50"
             required
           />
+
+          {/* Checkbox: Produto em promoção */}
+          <label className="switch">
+            <input
+              type="checkbox"
+              checked={onSale}
+              onChange={(e) => setOnSale(e.target.checked)}
+            />
+              Em promoção
+            <span className="slider"></span>
+          </label>
+
+          {/* Campo adicional: preço promocional */}
+          {onSale && (
+            <>
+              <label htmlFor="salePrice">Preço Promocional (R$)</label>
+              <input
+                name="salePrice"
+                id="salePrice"
+                type="number"
+                step="0.01"
+                value={salePrice}
+                onChange={(e) => setSalePrice(e.target.value)}
+                placeholder="Ex: 149.90"
+              />
+            </>
+          )}
 
           <label htmlFor="category">Categoria</label>
           <select
@@ -188,14 +224,21 @@ const Product = () => {
         </form>
       </div>
 
-      
       <div className="search">
         <form className="relative-input" onSubmit={(e) => e.preventDefault()}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-            strokeLinecap="round" strokeLinejoin="round"
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4"
-            aria-hidden="true">
+            aria-hidden="true"
+          >
             <path d="m21 21-4.34-4.34"></path>
             <circle cx="11" cy="11" r="8"></circle>
           </svg>
@@ -207,27 +250,44 @@ const Product = () => {
             onChange={handleSearchChange}
           />
         </form>
-        <select name="category" id="category" onChange={handleSelectChange} defaultValue="">
-            <option key={0} value="all">Todos</option>
-            {categories.map((category, index) => (
-              <option key={category._id} value={index + 1}>
-                {category.name}
-              </option>
-            ))}
+        <select
+          name="category"
+          id="category"
+          onChange={handleSelectChange}
+          defaultValue=""
+        >
+          <option key={0} value="all">
+            Todos
+          </option>
+          {categories.map((category, index) => (
+            <option key={category._id} value={index + 1}>
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
 
-
       <div className="container">
         {filteredProducts.length > 0 ? (
-        filteredProducts.map((product) => (
-            <Content key={product._id} product={product} onFetchProducts={fetchProducts} mode="admin"/>
-              ))
-            ) : (
-              <p style={{ textAlign: 'center', width: '100%', marginTop: '1rem' }}>
-                Nenhum produto encontrado.
-              </p>
-            )}
+          filteredProducts.map((product) => (
+            <Content
+              key={product._id}
+              product={product}
+              onFetchProducts={fetchProducts}
+              mode="admin"
+            />
+          ))
+        ) : (
+          <p
+            style={{
+              textAlign: "center",
+              width: "100%",
+              marginTop: "1rem",
+            }}
+          >
+            Nenhum produto encontrado.
+          </p>
+        )}
       </div>
     </>
   );

@@ -16,7 +16,7 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
       try {
         await api.delete(`/product/${product._id}`);
         alert("✅ Produto excluído com sucesso!");
-        if (onFetchProducts) onFetchProducts(); // Atualiza lista se vier da página de admin
+        if (onFetchProducts) onFetchProducts();
       } catch (error) {
         console.error("Erro ao excluir produto:", error);
         alert("❌ Erro ao excluir o produto. Tente novamente.");
@@ -28,6 +28,12 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
     navigate(`/edit-product/${product._id}`);
   };
 
+  // ✅ Garantir que os preços sejam números
+  const price = Number(product.price);
+  const salePrice = product.salePrice != null ? Number(product.salePrice) : null;
+  const onSale = product.onSale === true || product.onSale === "true";
+  const isOnSale = onSale && salePrice != null && salePrice !== price;
+
   return (
     <div className="content-product">
       <div className="content-product-info">
@@ -38,12 +44,19 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
       </div>
 
       <div className="content-product-actions">
-        <span>{FormatCurrency(product.price)}</span>
+        {isOnSale ? (
+          <div className="price-container">
+            <span className="old-price">{FormatCurrency(price)}</span>
+            <span className="sale-price">{FormatCurrency(salePrice)}</span>
+          </div>
+        ) : (
+          <span className="normal-price">{FormatCurrency(price)}</span>
+        )}
 
         {mode === "cart" && (
           <button
             className="btn-add-cart"
-            onClick={() => addToCart(product)}
+            onClick={() => addToCart({ ...product, price: isOnSale ? salePrice : price })}
             title="Adicionar ao carrinho"
           >
             +
