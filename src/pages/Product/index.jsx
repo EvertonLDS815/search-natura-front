@@ -51,44 +51,49 @@ const Product = () => {
   };
 
   const handleCreateProduct = async (e) => {
-    e.preventDefault();
-    if (!name || !price || !image || !category) {
-      alert("Preencha todos os campos obrigatórios!");
-      return;
+  e.preventDefault();
+
+  if (!name || !price || !image || !category) {
+    alert("Preencha todos os campos obrigatórios!");
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("price", Number(price)); // ✅ garante que vai como número
+    formData.append("category", category);
+    formData.append("image", image);
+    formData.append("onSale", onSale ? "true" : "false"); // ✅ backend espera string
+
+    if (onSale && salePrice) {
+      formData.append("salePrice", Number(salePrice)); // ✅ também como número
     }
 
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("price", price);
-      formData.append("category", category);
-      formData.append("image", image);
-      formData.append("onSale", onSale);
-      if (onSale && salePrice) {
-        formData.append("salePrice", salePrice);
-      }
+    const response = await api.post("/product", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-      await api.post("/product", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+    console.log("Produto criado:", response.data);
 
-      alert("✅ Produto cadastrado com sucesso!");
-      setName("");
-      setPrice("");
-      setCategory("");
-      setImage(null);
-      setPreview(null);
-      setOnSale(false);
-      setSalePrice("");
-      fetchProducts();
+    alert("✅ Produto cadastrado com sucesso!");
+    setName("");
+    setPrice("");
+    setCategory("");
+    setImage(null);
+    setPreview(null);
+    setOnSale(false);
+    setSalePrice("");
+    fetchProducts();
     } catch (error) {
-      console.error("❌ Erro ao cadastrar produto:", error);
-      alert("Erro ao cadastrar produto.");
+      console.error("❌ Erro ao cadastrar produto:", error.response?.data || error);
+      alert("❌ Erro ao cadastrar produto.");
     } finally {
       setLoading(false);
     }
   };
+
 
   function fetchProductsByCategory(categoryId) {
     api
