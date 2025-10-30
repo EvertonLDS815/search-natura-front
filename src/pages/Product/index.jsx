@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import "./style.css";
 import "../Home/style.css";
 import Content from "../../components/Content";
+import { toast } from "react-toastify";
 
 const Product = () => {
   const [name, setName] = useState("");
@@ -77,7 +78,7 @@ const Product = () => {
 
     console.log("Produto criado:", response.data);
 
-    alert("✅ Produto cadastrado com sucesso!");
+    toast.success("Produto cadastrado com sucesso!");
     setName("");
     setPrice("");
     setCategory("");
@@ -88,7 +89,7 @@ const Product = () => {
     fetchProducts();
     } catch (error) {
       console.error("❌ Erro ao cadastrar produto:", error.response?.data || error);
-      alert("❌ Erro ao cadastrar produto.");
+      return toast.error("❌ Erro ao cadastrar produto.");
     } finally {
       setLoading(false);
     }

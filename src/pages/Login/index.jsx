@@ -7,6 +7,7 @@ import El2 from '../../assets/logo.png';
 import EyeOpen from '../../assets/eye-open-shari.png';   // 👁️ ícone olho aberto
 import EyeClosed from '../../assets/eye-closed.png';
 import { UserContext } from '../../context/UserContext';
+import { toast } from 'react-toastify';
 
 const Login = () => {
   const [login, setLogin] = useState('');
@@ -28,9 +29,10 @@ const Login = () => {
       await fetchUser();   // já vai chamar setUser dentro do UserContext
 
       navigate("/home", { replace: true });
+      return toast.success(`Olá ${data.user.name}!!`);
     } catch (err) {
       console.error("Erro completo do login:", err);
-      alert(err.response?.data?.error || "Erro ao fazer login");
+      toast.error("Login ou Senha incorretos!!");
       setError("Login e/ou senha inválidos!");
     }
   };

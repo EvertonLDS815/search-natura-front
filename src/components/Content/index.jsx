@@ -5,23 +5,64 @@ import FormatCurrency from "../../utils/FormatCurrency";
 import { CartContext } from "../../context/CartContext";
 import trashIcon from "../../assets/trash.svg";
 import editIcon from "../../assets/edit.svg";
+import { toast } from "react-toastify";
 import "./style.css";
 
 const Content = ({ product, mode = "cart", onFetchProducts }) => {
   const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
 
-  const handleDelete = async () => {
-    if (window.confirm(`Tem certeza que deseja excluir o produto "${product.name}"?`)) {
-      try {
-        await api.delete(`/product/${product._id}`);
-        alert("✅ Produto excluído com sucesso!");
-        if (onFetchProducts) onFetchProducts();
-      } catch (error) {
-        console.error("Erro ao excluir produto:", error);
-        alert("❌ Erro ao excluir o produto. Tente novamente.");
-      }
+  const handleDeleteProduct = async () => {
+    toast.info(
+    <div style={{ fontSize: "0.95rem" }}>
+      <p>Tem certeza que deseja excluir <strong>{product.name}</strong>?</p>
+      <div style={{ display: "flex", gap: "10px", marginTop: "12px" }}>
+        <button
+          style={{
+            background: "#ff4757",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            padding: "6px 12px",
+            cursor: "pointer",
+          }}
+          onClick={async () => {
+            try {
+              await api.delete(`/product/${product._id}`);
+              toast.dismiss(); // fecha o toast atual
+              toast.success(`Produto "${product.name}" excluído com sucesso!`);
+              if (onFetchProducts) onFetchProducts();
+            } catch (error) {
+              console.error("Erro ao excluir produto:", error);
+              toast.dismiss();
+              toast.error("❌ Erro ao excluir o produto. Tente novamente.");
+            }
+          }}
+        >
+          Sim
+        </button>
+
+        <button
+          style={{
+            background: "#6c757d",
+            color: "#fff",
+            border: "none",
+            borderRadius: "6px",
+            padding: "6px 12px",
+            cursor: "pointer",
+          }}
+          onClick={() => toast.dismiss()}
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>,
+    {
+      autoClose: false, // só fecha se clicar
+      closeOnClick: false,
+      draggable: false,
     }
+  );
   };
 
   const handleEdit = () => {
@@ -68,7 +109,7 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
             <button className="btn-edit" onClick={handleEdit} title="Editar produto">
               <img src={editIcon} alt="Editar" />
             </button>
-            <button className="btn-delete" onClick={handleDelete} title="Excluir produto">
+            <button className="btn-delete" onClick={handleDeleteProduct} title="Excluir produto">
               <img src={trashIcon} alt="Excluir" />
             </button>
           </div>
