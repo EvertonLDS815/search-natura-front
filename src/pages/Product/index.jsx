@@ -52,33 +52,34 @@ const Product = () => {
   };
 
   const handleCreateProduct = async (e) => {
+  const handleCreateProduct = async (e) => {
   e.preventDefault();
 
   if (!name || !price || !image || !category) {
-    alert("Preencha todos os campos obrigatórios!");
+    toast.error("Preencha todos os campos obrigatórios!");
     return;
   }
 
   setLoading(true);
+
   try {
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("price", Number(price)); // ✅ garante que vai como número
+    formData.append("price", Number(price));
     formData.append("category", category);
-    formData.append("image", image);
-    formData.append("onSale", onSale ? "true" : "false"); // ✅ backend espera string
+    formData.append("image", image); // o backend fará upload para o Cloudinary
+    formData.append("onSale", onSale ? "true" : "false");
 
     if (onSale && salePrice) {
-      formData.append("salePrice", Number(salePrice)); // ✅ também como número
+      formData.append("salePrice", Number(salePrice));
     }
 
-    const response = await api.post("/product", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    // 🚫 sem headers (o Axios já cuida disso)
+    const response = await api.post("/product", formData);
 
-    console.log("Produto criado:", response.data);
+    toast.success("Produto cadastrado com sucesso!", { autoClose: 1000 });
 
-    toast.success("Produto cadastrado com sucesso!");
+    // limpar formulário
     setName("");
     setPrice("");
     setCategory("");
@@ -86,14 +87,16 @@ const Product = () => {
     setPreview(null);
     setOnSale(false);
     setSalePrice("");
+
+    // atualizar listagem
     fetchProducts();
-    } catch (error) {
-      console.error("❌ Erro ao cadastrar produto:", error.response?.data || error);
-      return toast.error("❌ Erro ao cadastrar produto.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (error) {
+    console.error("❌ Erro ao cadastrar produto:", error.response?.data || error);
+    toast.error("Erro ao cadastrar produto.");
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   function fetchProductsByCategory(categoryId) {
