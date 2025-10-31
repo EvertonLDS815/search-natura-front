@@ -52,7 +52,6 @@ const Product = () => {
   };
 
   const handleCreateProduct = async (e) => {
-  const handleCreateProduct = async (e) => {
   e.preventDefault();
 
   if (!name || !price || !image || !category) {
@@ -75,7 +74,8 @@ const Product = () => {
     }
 
     // 🚫 sem headers (o Axios já cuida disso)
-    const response = await api.post("/product", formData);
+    const {data} = await api.post("/product", formData);
+    console.log(data)
 
     toast.success("Produto cadastrado com sucesso!", { autoClose: 1000 });
 
@@ -92,11 +92,12 @@ const Product = () => {
     fetchProducts();
   } catch (error) {
     console.error("❌ Erro ao cadastrar produto:", error.response?.data || error);
-    toast.error("Erro ao cadastrar produto.");
+    return toast.error("Erro ao cadastrar produto.");
   } finally {
     setLoading(false);
   }
 };
+
 
 
   function fetchProductsByCategory(categoryId) {
@@ -300,6 +301,6 @@ const Product = () => {
       </div>
     </>
   );
-};
+}
 
 export default Product;
