@@ -74,8 +74,7 @@ const Product = () => {
     }
 
     // 🚫 sem headers (o Axios já cuida disso)
-    const {data} = await api.post("/product", formData);
-    console.log(data)
+    await api.post("/product", formData);
 
     toast.success("Produto cadastrado com sucesso!", { autoClose: 1000 });
 

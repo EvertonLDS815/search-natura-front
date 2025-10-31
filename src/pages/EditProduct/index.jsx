@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import api from "../../config";
 import Header from "../../components/Header";
 import "./style.css";
+import { toast } from "react-toastify";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -97,14 +98,13 @@ const EditProduct = () => {
 
       if (image) formData.append("image", image);
 
-      const { data } = await api.patch(`/product/${id}`, formData);
+      await api.patch(`/product/${id}`, formData);
 
-      console.log("Produto atualizado:", data);
-      alert("✅ Produto atualizado com sucesso!");
+      toast.success("Produto atualizado com sucesso!");
       navigate("/products");
     } catch (error) {
       console.error("Erro ao atualizar produto:", error.response?.data || error);
-      alert("❌ Falha ao atualizar o produto.");
+      return toast.error("Falha ao atualizar o produto.");
     } finally {
       setLoading(false);
     }
