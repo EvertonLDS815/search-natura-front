@@ -30,7 +30,8 @@ export const CartProvider = ({ children }) => {
 
   toast.success("Adicionado!", {
     autoClose: 1100,
-    position: "bottom-right"
+    position: "bottom-right",
+    theme: "dark"
   });
 };
 

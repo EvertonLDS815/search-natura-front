@@ -8,6 +8,7 @@ import EyeOpen from '../../assets/eye-open-shari.png';   // 👁️ ícone olho 
 import EyeClosed from '../../assets/eye-closed.png';
 import { UserContext } from '../../context/UserContext';
 import { toast } from 'react-toastify';
+import ClickSound from '../../assets/sharingan.mp3';
 
 const Login = () => {
   const [login, setLogin] = useState('');
@@ -29,11 +30,22 @@ const Login = () => {
       await fetchUser();   // já vai chamar setUser dentro do UserContext
 
       navigate("/home", { replace: true });
-      return toast.success(`Olá ${data.user.name}!!`);
+      return toast.success(<div>Olá <strong>{data.user.name}!!</strong></div>);
     } catch (err) {
       console.error("Erro completo do login:", err);
       toast.error("Login ou Senha incorretos!!");
       setError("Login e/ou senha inválidos!");
+    }
+  };
+
+  const handleShowPassword = () => {
+    const newShow = !showPassword;
+    setShowPassword(newShow);
+
+    // Toca som apenas quando estiver abrindo a senha
+    if (newShow) {
+      const audio = new Audio(ClickSound);
+      audio.play();
     }
   };
 
@@ -72,7 +84,7 @@ const Login = () => {
             src={showPassword ? EyeOpen : EyeClosed}
             alt="Mostrar senha"
             className="toggle-password"
-            onClick={() => setShowPassword(!showPassword)}
+            onClick={handleShowPassword} // 👈 usa a função aqui
           />
         </div>
 
