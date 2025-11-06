@@ -61,16 +61,20 @@ const Home = () => {
     setSearchTerm(''); // limpa o input ao mudar a categoria
   };
 
-  // Filtro por nome (input)
-  const handleSearchChange = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
+  const removeAccents = (str) =>
+  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    const filtered = products.filter((product) =>
-      product.name.toLowerCase().includes(term)
-    );
-    setFilteredProducts(filtered);
-  };
+
+  const handleSearchChange = (e) => {
+  const term = removeAccents(e.target.value.toLowerCase());
+  setSearchTerm(e.target.value);
+
+  const filtered = products.filter((product) =>
+    removeAccents(product.name.toLowerCase()).includes(term)
+  );
+
+  setFilteredProducts(filtered);
+};
 
   return (
     <>
@@ -97,6 +101,8 @@ const Home = () => {
             placeholder="Digite um produto"
             value={searchTerm}
             onChange={handleSearchChange}
+            autoCapitalize="none"
+            autoCorrect="off"
           />
         </form>
 

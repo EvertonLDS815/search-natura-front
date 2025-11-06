@@ -148,6 +148,13 @@
         padding: 18px;
     }
     .list-container {
-        padding: 18px;
+        padding: 10px;
+    }
+    .list-container h2 {
+        padding: 5px 13px 0;
+        margin-bottom: 10px;
+    }
+    .list-container li {
+        padding: 10px 12px;
     }
 }

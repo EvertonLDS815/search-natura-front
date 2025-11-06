@@ -55,7 +55,7 @@ const Product = () => {
   e.preventDefault();
 
   if (!name || !price || !image || !category) {
-    toast.error("Preencha todos os campos obrigatórios!");
+    toast.info("Preencha todos os campos!");
     return;
   }
 
@@ -122,14 +122,20 @@ const Product = () => {
     setSearchTerm("");
   };
 
+  const removeAccents = (str) =>
+  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+
   const handleSearchChange = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = products.filter((product) =>
-      product.name.toLowerCase().includes(term)
-    );
-    setFilteredProducts(filtered);
-  };
+  const term = removeAccents(e.target.value.toLowerCase());
+  setSearchTerm(e.target.value);
+
+  const filtered = products.filter((product) =>
+    removeAccents(product.name.toLowerCase()).includes(term)
+  );
+
+  setFilteredProducts(filtered);
+};
 
   return (
     <>
@@ -146,7 +152,6 @@ const Product = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ex: Kaiak 100ml"
-            required
           />
 
           <label htmlFor="price">Preço (R$)</label>
@@ -158,7 +163,6 @@ const Product = () => {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="Ex: 185.50"
-            required
           />
 
           {/* Checkbox: Produto em promoção */}
@@ -194,7 +198,6 @@ const Product = () => {
             id="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            required
           >
             <option value="">Selecione uma categoria</option>
             {categories.map((cat) => (
@@ -257,6 +260,8 @@ const Product = () => {
             placeholder="Buscar produto pelo nome..."
             value={searchTerm}
             onChange={handleSearchChange}
+            autoCapitalize="none"
+            autoCorrect="off"
           />
         </form>
         <select
