@@ -6,17 +6,22 @@ import Content from '../../components/Content';
 import Header from '../../components/Header';
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]); // ← produtos filtrados
+  const [allProducts, setAllProducts] = useState([]); // lista original
+  const [filteredProducts, setFilteredProducts] = useState([]); // lista exibida
   const [categories, setCategories] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(''); // ← termo digitado
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
-  // Buscar todos os produtos
+  // Função para remover acentos
+  const normalize = (str) =>
+    str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+  // Buscar produtos
   const fetchProducts = async () => {
     try {
       const { data } = await api.get('/products');
-      setProducts(data);
-      setFilteredProducts(data); // inicia com todos
+      setAllProducts(data);
+      setFilteredProducts(data);
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
     }
@@ -37,44 +42,36 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  // Buscar produtos por categoria
-  function fetchProductsByCategory(categoryId) {
-    api.get(`/products/category/${categoryId}`)
-      .then(({ data }) => {
-        setProducts(data);
-        setFilteredProducts(data);
-      })
-      .catch((error) => {
-        console.error('Erro ao buscar produtos por categoria:', error);
-      });
-  }
+  // Refiltrar automaticamente quando categoria ou texto mudar
+  useEffect(() => {
+    let filtered = [...allProducts];
 
-  // Filtro por categoria
-  const handleSelectChange = (e) => {
-    const value = e.target.value;
-    if (value === 'all') {
-      fetchProducts();
-    } else {
-      const categoryId = categories[value - 1]._id;
-      fetchProductsByCategory(categoryId);
+    // Filtro por categoria
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(
+        (prod) => prod.category === selectedCategory
+      );
     }
-    setSearchTerm(''); // limpa o input ao mudar a categoria
+
+    // Filtro por texto
+    if (searchTerm.trim() !== '') {
+      filtered = filtered.filter((prod) =>
+        normalize(prod.name).includes(normalize(searchTerm))
+      );
+    }
+
+    setFilteredProducts(filtered);
+  }, [searchTerm, selectedCategory, allProducts]);
+
+  // Input de busca
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
 
-  const removeAccents = (str) =>
-  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-
-  const handleSearchChange = (e) => {
-  const term = removeAccents(e.target.value.toLowerCase());
-  setSearchTerm(e.target.value);
-
-  const filtered = products.filter((product) =>
-    removeAccents(product.name.toLowerCase()).includes(term)
-  );
-
-  setFilteredProducts(filtered);
-};
+  // Seleção de categoria
+  const handleSelectChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
 
   return (
     <>
@@ -106,10 +103,10 @@ const Home = () => {
           />
         </form>
 
-        <select name="category" id="category" onChange={handleSelectChange} defaultValue="">
-          <option key={0} value="all">Todos</option>
-          {categories.map((category, index) => (
-            <option key={category._id} value={index + 1}>
+        <select name="category" id="category" onChange={handleSelectChange} value={selectedCategory}>
+          <option value="all">Todos</option>
+          {categories.map((category) => (
+            <option key={category._id} value={category._id}>
               {category.name}
             </option>
           ))}
