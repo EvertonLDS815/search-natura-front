@@ -3,9 +3,8 @@ import { useState, useEffect } from "react";
 import api from "../../config";
 import Header from "../../components/Header";
 import Content from "../../components/Content";
-import DrawerAddProduct from "./DrawerAddProduct";
+import DrawerAddProduct from "../../components/Drawer/DrawerAddProduct";
 import "./style.css";
-import "./drawer.css";
 import "../Home/style.css";
 
 const Product = () => {

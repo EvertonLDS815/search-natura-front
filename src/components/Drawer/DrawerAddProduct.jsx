@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import api from "../../config";
+import "./style.css";
 
 const DrawerAddProduct = ({ open, onClose, onSuccess }) => {
   const [name, setName] = useState("");
@@ -134,7 +135,6 @@ const DrawerAddProduct = ({ open, onClose, onSuccess }) => {
           ) : (
             <>
               <span className="file-plus">+</span>
-              <p className="file-text">Adicionar imagem (opcional)</p>
             </>
           )}
         </label>
