@@ -71,6 +71,7 @@ const Home = () => {
   // Seleção de categoria
   const handleSelectChange = (e) => {
     setSelectedCategory(e.target.value);
+    setSearchTerm('');
   };
 
   return (

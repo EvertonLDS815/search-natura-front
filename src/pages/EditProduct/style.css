@@ -14,6 +14,22 @@
   color: #16a34a;
 }
 
+.edit-container-page button {
+  background-color: #1e88e5;
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-container-page button:hover {
+  background-color: #1565c0;
+}
+
 .product-form {
   display: flex;
   flex-direction: column;
@@ -30,14 +46,15 @@
   padding: 0.8rem;
   border: 1px solid #ddd;
   border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
 }
 
-
-.file-upload {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0.5rem 0;
+.product-form input:focus,
+.product-form select:focus {
+  border-color: #aa76ba;
+  outline: 2px solid #e7d9ec;
 }
 
 .file-label {
@@ -58,10 +75,13 @@
 }
 
 .file-label span {
-  font-size: 2rem;
-  color: #aaa;
+  font-size: 1.8rem;
 }
 
+.file-label:hover span {
+  color: #aa76ba;
+  transition: 0.25s ease;
+}
 .file-preview {
   width: 100%;
   height: 100%;

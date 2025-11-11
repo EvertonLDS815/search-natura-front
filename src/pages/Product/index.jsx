@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import api from "../../config";
 import Header from "../../components/Header";
 import Content from "../../components/Content";
-import DrawerAddProduct from "../../components/Drawer/DrawerAddProduct";
+import DrawerAddProduct from "../../components/Drawer";
 import "./style.css";
 import "../Home/style.css";
 
@@ -59,6 +59,11 @@ const Product = () => {
     setFilteredProducts(filtered);
   }, [searchTerm, selectedCategory, allProducts]);
 
+  const handleSelectChange = (e) => {
+  setSelectedCategory(e.target.value);
+  setSearchTerm(""); // limpa campo de busca
+};
+
   return (
     <>
       <Header />
@@ -93,10 +98,7 @@ const Product = () => {
           />
         </form>
 
-        <select
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          value={selectedCategory}
-        >
+        <select onChange={handleSelectChange} value={selectedCategory}>
           <option value="all">Todos</option>
           {categories.map((cat) => (
             <option key={cat._id} value={cat._id}>
