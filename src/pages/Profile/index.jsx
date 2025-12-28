@@ -53,8 +53,6 @@ const Profile = () => {
     }
   };
 
-  if (!user) return <p>Carregando...</p>;
-
   return (
     <>
       <Header />
