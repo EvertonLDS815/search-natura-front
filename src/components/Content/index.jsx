@@ -75,6 +75,7 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
 
   // ✅ Garantir que os preços sejam números
   const price = Number(product.price);
+  const stock = Number(product.stock);
   const salePrice = product.salePrice != null ? Number(product.salePrice) : null;
   const onSale = product.onSale === true || product.onSale === "true";
   const isOnSale = onSale && salePrice != null && salePrice !== price;
@@ -82,12 +83,13 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
   return (
     <div className="content-product">
       <div className="content-product-info">
-        <h3>{product.name}</h3>
+        <h3 style={product.stock === 0 ? {color: '#d32f2f'} : {color: 'black'}}>{product.name}</h3>
         <a href={product.imageURL} target="_blank" rel="noopener noreferrer">
           <img src={product.imageURL} alt={product.name} />
         </a>
       </div>
 
+        {mode === "admin" && <span className="label-stock">Estoque: {stock}</span>}
       <div className="content-product-actions">
         {isOnSale ? (
           <div className="price-container">
