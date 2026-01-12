@@ -24,6 +24,20 @@ const Product = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const handleStorage = (event) => {
+      if (event.key === "reloadProducts") {
+        fetchProducts();
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
+
+
   const fetchCategories = async () => {
     try {
       const { data } = await api.get("/categories");

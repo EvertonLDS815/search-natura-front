@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../../config";
 import FormatCurrency from "../../utils/FormatCurrency";
 import { CartContext } from "../../context/CartContext";
@@ -10,7 +10,6 @@ import "./style.css";
 
 const Content = ({ product, mode = "cart", onFetchProducts }) => {
   const { addToCart } = useContext(CartContext);
-  const navigate = useNavigate();
 
   const handleDeleteProduct = (id, name) => {
   const toastId = toast.info(
@@ -69,10 +68,6 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
   );
 };
 
-  const handleEdit = () => {
-    navigate(`/edit-product/${product._id}`);
-  };
-
   // ✅ Garantir que os preços sejam números
   const price = Number(product.price);
   const stock = Number(product.stock);
@@ -112,9 +107,10 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
 
         {mode === "admin" && (
           <div className="admin-buttons">
-            <button className="btn-edit" onClick={handleEdit} title="Editar produto">
+            <Link to={`/edit-product/${product._id}`} target="_blank"
+            className="btn-edit" title="Editar produto">
               <img src={editIcon} alt="Editar" />
-            </button>
+            </Link>
             <button className="btn-delete" onClick={() => handleDeleteProduct(product._id, product.name)} title="Excluir produto">
               <img src={trashIcon} alt="Excluir" />
             </button>

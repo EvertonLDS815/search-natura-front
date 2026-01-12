@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../config";
 import Header from "../../components/Header";
@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 
 const EditProduct = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [product, setProduct] = useState({
     name: "",
@@ -85,6 +84,11 @@ const EditProduct = () => {
     e.preventDefault();
     setLoading(true);
 
+    localStorage.setItem(
+      "reloadProducts",
+      JSON.stringify({ updatedAt: Date.now() })
+    );
+
     try {
       const formData = new FormData();
       formData.append("name", product.name);
@@ -101,8 +105,8 @@ const EditProduct = () => {
 
       await api.patch(`/product/${id}`, formData);
 
-      toast.success("Produto atualizado com sucesso!");
-      navigate("/products");
+      // navigate("/products");
+      window.close(`/edit-product/${id}`, "_blank");
     } catch (error) {
       console.error("Erro ao atualizar produto:", error.response?.data || error);
       return toast.error("Falha ao atualizar o produto.");
