@@ -7,9 +7,11 @@ import { toast } from "react-toastify";
 const Category = () => {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchCategories();
+    fetchCategoryTotals();
   }, []);
 
   const fetchCategories = async () => {
@@ -89,7 +91,18 @@ const Category = () => {
   );
 };
 
+  const fetchCategoryTotals = async () => {
+    try {
+      const res = await api.get("/categories/total-price");
+      setData(res.data);
+    } catch (err) {
+      console.error("Erro ao buscar totais por categoria", err);
+    }
+  };
 
+  const totalGeral = data.reduce((acc, item) => {
+    return acc + item.totalPrice;
+  }, 0);
 
   return (
     <>
@@ -127,6 +140,51 @@ const Category = () => {
                 ))}
                 </ul>
         </div>
+
+        <div className="table-container">
+          <h2>Resumo por Categoria</h2>
+
+          {data.length === 0 ? (
+            <p className="empty">Nenhuma categoria com produtos em estoque.</p>
+          ) : (
+            <table className="category-table">
+              <thead>
+                <tr>
+                  <th>Categoria</th>
+                  <th>Qtd. Produtos</th>
+                  <th>Total em Estoque</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.map((item) => (
+                  <tr key={item._id}>
+                    <td>{item.categoryName}</td>
+                    <td>{item.totalProducts}</td>
+                    <td>
+                      {item.totalPrice.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          <div className="table-total">
+            <h3>Total:</h3>
+            <strong>
+              {totalGeral.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            </strong>
+          </div>
+
+        </div>
+
+
     </div>
         </>
   );
