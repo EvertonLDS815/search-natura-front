@@ -109,34 +109,42 @@ const Settings = () => {
 
 
 
-  const handleAddProductRule =  async (e) => {
-    e.preventDefault();
+  const handleAddProductRule = async (e) => {
+  e.preventDefault();
 
-    try {
-       if (!productCode) {
-      return toast.info("Digite o código do produto");
-    }
+  // 1️⃣ Código obrigatório
+  if (!productCode) {
+    return toast.info("Digite o código do produto");
+  }
 
-    
+  // 2️⃣ Quantidade obrigatória
+  if (!stock) {
+    return toast.info("Digite a Quantidade!");
+  }
+
+  // 3️⃣ Quantidade válida
+  const qty = Number(stock);
+  if (qty <= 0) {
+    return toast.info("Quantidade inválida!");
+  }
+
+  try {
     await api.post("/product/add-stock", {
       code: Number(productCode),
-      quantity: Number(stock)
+      quantity: qty
     });
-    
-    if (!stock) {
-      return toast.info("Digite a Quantidade!");
-    }
-    // por enquanto só visual
 
     toast.success("Quantidade Atualizada!");
-
     setProductCode("");
     setStock("");
-    } catch (err) {
-      console.error(err);
-      return toast.error(err.response?.data?.message || "Erro ao atualizar quantidade" );
-    }
-  };
+
+  } catch (err) {
+    console.error(err);
+    return toast.error(
+      err.response?.data?.message || "Erro ao atualizar quantidade!"
+    );
+  }
+};
 
 
   return (
