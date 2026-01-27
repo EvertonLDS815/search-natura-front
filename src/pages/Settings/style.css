@@ -23,6 +23,12 @@
   color: #222;
 }
 
+.two-input-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
 .form-container form {
   display: flex;
   justify-content: center;

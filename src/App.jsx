@@ -9,7 +9,7 @@ import Product from './pages/Product';
 import EditProduct from './pages/EditProduct';
 import { CartProvider } from './context/CartContext';
 import { UserProvider } from './context/UserContext';
-import Header from './components/Header';
+import Settings from './pages/Settings';
 
 const App = () => {
   const token = localStorage.getItem('user');
@@ -38,7 +38,7 @@ const App = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/products" element={<Product />} />
               <Route path="/edit-product/:id" element={<EditProduct />} />
-              <Route path="/categories" element={<Category />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/login" replace />} />
@@ -51,7 +51,6 @@ const App = () => {
 
 // Layout privado com Header
 import { Outlet } from 'react-router-dom';
-import Category from './pages/Category';
 const PrivateLayout = ({ children }) => {
   const token = localStorage.getItem('user');
   if (!token) return <Navigate to="/login" replace />;

@@ -57,7 +57,7 @@ const Header = () => {
         <a onClick={() => { navigate('/home'); setMenuOpen(false);}}>Home</a>
         <a onClick={() => { navigate('/products'); setMenuOpen(false);}}>Produtos</a>
         <a onClick={() => { navigate('/profile'); setMenuOpen(false);}}>Perfil</a>
-        <a onClick={() => { navigate('/categories'); setMenuOpen(false);}}>Categorias</a>
+        <a onClick={() => { navigate('/settings'); setMenuOpen(false);}}>Configurações</a>
 
         <a onClick={handleLogout} className="a-logout">Sair</a>
       </nav>

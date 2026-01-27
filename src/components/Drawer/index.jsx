@@ -10,6 +10,7 @@ const DrawerAddProduct = ({ open, onClose, onSuccess }) => {
   const [stock, setStock] = useState("");
   const [onSale, setOnSale] = useState(false);
   const [category, setCategory] = useState("");
+  const [code, setCode] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -48,6 +49,7 @@ const DrawerAddProduct = ({ open, onClose, onSuccess }) => {
       formData.append("price", Number(price));
       formData.append("stock", Number(stock));
       formData.append("category", category);
+      formData.append("code", code);
       formData.append("onSale", onSale ? "true" : "false");
       formData.append("image", image);
 
@@ -64,6 +66,7 @@ const DrawerAddProduct = ({ open, onClose, onSuccess }) => {
       setPrice("");
       setSalePrice("");
       setCategory("");
+      setCode("");
       setStock("");
       setOnSale(false);
       setImage(null);
@@ -139,6 +142,13 @@ const DrawerAddProduct = ({ open, onClose, onSuccess }) => {
               />
             </>
           )}
+
+          <label>Código</label>
+          <input
+            type="number"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
 
           <label>Categoria</label>
           <select

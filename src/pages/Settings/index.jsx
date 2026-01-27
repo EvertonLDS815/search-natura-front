@@ -4,10 +4,13 @@ import api from "../../config";
 import "./style.css";
 import { toast } from "react-toastify";
 
-const Category = () => {
+const Settings = () => {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
+  const [productCode, setProductCode] = useState("");
+  const [stock, setStock] = useState("");
+
 
   useEffect(() => {
     fetchCategories();
@@ -101,14 +104,66 @@ const Category = () => {
   };
 
   const totalGeral = data.reduce((acc, item) => {
-    return acc + item.totalPrice;
-  }, 0);
+      return acc + item.totalPrice;
+    }, 0);
+
+
+
+  const handleAddProductRule =  async (e) => {
+    e.preventDefault();
+
+    try {
+       if (!productCode) {
+      return toast.info("Digite o código do produto");
+    }
+
+    
+    await api.post("/product/add-stock", {
+      code: Number(productCode),
+      quantity: Number(stock)
+    });
+    
+    if (!stock) {
+      return toast.info("Digite a Quantidade!");
+    }
+    // por enquanto só visual
+
+    toast.success("Quantidade Atualizada!");
+
+    setProductCode("");
+    setStock("");
+    } catch (err) {
+      console.error(err);
+      return toast.error(err.response?.data?.message || "Erro ao atualizar quantidade" );
+    }
+  };
+
 
   return (
     <>
     <Header />
     <div className="category-page">
         <div className="form-container">
+            <h2>Configuração de Produto</h2>
+
+            <form onSubmit={handleAddProductRule} className="two-input-form">
+              <input
+                type="number"
+                placeholder="Código do Produto"
+                value={productCode}
+                onChange={(e) => setProductCode(e.target.value)}
+              />
+
+              <input
+                type="number"
+                placeholder="Quantidade"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
+              />
+
+              <button type="submit">Adicionar</button>
+            </form>
+
             <h2>Criar Categoria</h2>
             <form onSubmit={handleSubmit}>
             <input
@@ -190,4 +245,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Settings;

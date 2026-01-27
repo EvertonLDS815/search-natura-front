@@ -95,6 +95,7 @@ const EditProduct = () => {
       formData.append("price", Number(product.price));
       formData.append("stock", Number(product.stock));
       formData.append("category", product.category);
+      formData.append("code", product.code);
       formData.append("onSale", product.onSale ? "true" : "false");
 
       if (product.onSale && product.salePrice) {
@@ -174,6 +175,15 @@ const EditProduct = () => {
               />
             </>
           )}
+
+          <label>Código</label>
+          <input
+            type="number"
+            name="code"
+            value={product.code}
+            onChange={handleChange}
+            required
+          />
 
           <label>Categoria</label>
           <select
