@@ -90,7 +90,6 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
           <div className="price-container">
             <span className="old-price">{FormatCurrency(price)}</span>
             <span className="sale-price">{FormatCurrency(salePrice)}</span>
-            {mode === "admin" && <span style={{color: '#39a339'}}>Código: {product.code}</span>}
           </div>
         ) : (
           <span className="normal-price">{FormatCurrency(price)}</span>
@@ -118,6 +117,7 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
           </div>
         )}
       </div>
+        {mode === "admin" && <span style={{color: '#39a339', fontWeight: 600}}>Código: {product.code}</span>}
     </div>
   );
 };
