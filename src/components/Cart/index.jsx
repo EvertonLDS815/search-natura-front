@@ -37,6 +37,24 @@ const Cart = ({ open, toggleOpen }) => {
   }
 };
 
+const handleCheckin = async () => {
+  try {
+    const items = cart.map(item => ({
+      productId: item._id,
+      quantity: item.quantity
+    }));
+    await api.post('/stock/in', { items });
+
+    toast.success('Entrada registrada com sucesso!');
+    clearCart();
+  } catch (err) {
+    const message =
+      err.response?.data?.message ||
+      'Erro ao registrar entrada!';
+    toast.error(message);
+  }
+}
+
 
   return (
     <div className="cart-container">
@@ -73,11 +91,18 @@ const Cart = ({ open, toggleOpen }) => {
           </div>
 
           {cart.length > 0 && (
-            <button className="checkout-btn" onClick={handleCheckout}>
-              Saída
-            </button>
+            <>
+              <button className="checkout-btn" onClick={handleCheckout}>
+                Saída
+              </button>
+              <button className="clear-cart-btn" onClick={clearCart}>
+                Limpar
+              </button>
+              <button className="checkin-btn" onClick={handleCheckin}>
+                Entrada
+              </button>
+             </>
           )}
-
         </div>
       )}
     </div>
