@@ -97,6 +97,21 @@
   background-color: white;
 }
 
+.checkout-btn {
+  width: 100%;
+  padding: 8px;
+  background: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+.checkout-btn:hover {
+  background: #218838;
+}
+
 @media (max-width: 600px) {
   .cart-dropdown {
     width: 100vw;
