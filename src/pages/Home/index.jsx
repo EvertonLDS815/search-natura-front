@@ -54,11 +54,18 @@ const Home = () => {
     }
 
     // Filtro por texto
-    if (searchTerm.trim() !== '') {
-      filtered = filtered.filter((prod) =>
-        normalize(prod.name).includes(normalize(searchTerm))
-      );
+    if (searchTerm.trim() !== "") {
+      const searchWords = normalize(searchTerm).split(" ");
+
+        filtered = filtered.filter((p) => {
+        const productName = normalize(p.name);
+
+        return searchWords.every(word =>
+        productName.includes(word)
+        );
+      });
     }
+
 
     setFilteredProducts(filtered);
   }, [searchTerm, selectedCategory, allProducts]);

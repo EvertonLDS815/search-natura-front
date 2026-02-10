@@ -65,10 +65,17 @@ const Product = () => {
     }
 
     if (searchTerm.trim() !== "") {
-      filtered = filtered.filter((p) =>
-        normalize(p.name).includes(normalize(searchTerm))
+      const searchWords = normalize(searchTerm).split(" ");
+
+      filtered = filtered.filter((p) => {
+      const productName = normalize(p.name);
+
+      return searchWords.every(word =>
+      productName.includes(word)
       );
+      });
     }
+
 
     setFilteredProducts(filtered);
   }, [searchTerm, selectedCategory, allProducts]);
