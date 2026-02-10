@@ -82,6 +82,45 @@
   background-color: #15803d
 }
 
+/* fundo escuro */
+.crop-overlay {
+  position: fixed;
+  inset: 0;
+  padding-top: 2rem;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 800;
+}
+
+/* caixa do crop */
+.crop-box {
+  background: #000;
+  width: 90%;
+  max-width: 400px;
+  height: 480px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* área da imagem */
+.crop-box > div:first-child {
+  position: relative;
+  flex: 1;
+}
+
+/* botões */
+.crop-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  background: #111;
+}
+
 @media (max-width: 600px) {
   .title-edit {
     font-size: 1rem;
