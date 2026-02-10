@@ -91,7 +91,7 @@ const handleCheckin = async () => {
           </div>
 
           {cart.length > 0 && (
-            <>
+            <div className="cart-actions">
               <button className="checkout-btn" onClick={handleCheckout}>
                 Saída
               </button>
@@ -101,7 +101,7 @@ const handleCheckin = async () => {
               <button className="checkin-btn" onClick={handleCheckin}>
                 Entrada
               </button>
-             </>
+             </div>
           )}
         </div>
       )}
