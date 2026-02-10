@@ -1,16 +1,15 @@
 import axios from 'axios';
 import { redirectToLogin } from '../utils/redirect';
 
-const token = localStorage.getItem('user');
-
 const api = axios.create({
   baseURL: 'https://search-natura.vercel.app',
-  headers: { Authorization: `Bearer ${token}` },
 });
 
 // interceptor de request
 api.interceptors.request.use(
   (config) => {
+    
+  const token = localStorage.getItem('user');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
