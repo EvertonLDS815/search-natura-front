@@ -66,6 +66,8 @@ const Login = () => {
           placeholder="Login"
           value={login}
           onChange={(e) => setLogin(e.target.value)}
+          autoCapitalize="none"
+          autoCorrect="off"
           required
         />
 

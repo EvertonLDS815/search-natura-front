@@ -109,6 +109,8 @@ const Product = () => {
             placeholder="Buscar produto..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            autoCapitalize="none"
+            autoCorrect="off"
           />
         </form>
 
