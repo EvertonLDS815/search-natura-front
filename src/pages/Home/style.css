@@ -25,12 +25,22 @@
   width: 100%;
 }
 
-.relative-input svg {
+.search-svg {
   position: absolute;
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
   color: #888;
+}
+
+.x-svg {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  fill: #999;
+  cursor: pointer;
+  width: 16px;
 }
 
 .search input:focus {
