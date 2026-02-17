@@ -12,7 +12,7 @@ import { UserProvider } from './context/UserContext';
 import Settings from './pages/Settings';
 
 const App = () => {
-  const token = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
 
   return (
     <Router>
@@ -52,7 +52,7 @@ const App = () => {
 // Layout privado com Header
 import { Outlet } from 'react-router-dom';
 const PrivateLayout = ({ children }) => {
-  const token = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
   if (!token) return <Navigate to="/login" replace />;
   return (
     <>
@@ -62,15 +62,9 @@ const PrivateLayout = ({ children }) => {
   );
 };
 
-// 🔒 Rota privada (só acessa se tiver token)
-const PrivateRoute = ({ children }) => {
-  const token = localStorage.getItem('user');
-  return token ? children : <Navigate to="/login" replace />;
-};
-
 // 🔓 Rota pública (se tiver token, redireciona)
 const PublicRoute = ({ children }) => {
-  const token = localStorage.getItem('user');
+  const token = localStorage.getItem('token');
   return token ? <Navigate to="/home" replace /> : children;
 };
 

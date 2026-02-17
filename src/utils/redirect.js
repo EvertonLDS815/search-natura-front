@@ -1,9 +1,4 @@
-import { createBrowserHistory } from 'history';
-
-const history = createBrowserHistory();
-
 export const redirectToLogin = () => {
-  history.push('/login');
+  localStorage.removeItem('token');
+  window.location.replace('/login');
 };
-
-export default history;

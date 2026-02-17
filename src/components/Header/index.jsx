@@ -2,12 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import Cart from "../Cart";
-import logOut from "../../assets/log-out.svg";
+import logOutIcon from "../../assets/log-out.svg";
 import menuIcon from "../../assets/menu.svg";
 import "./style.css";
 
 const Header = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, logout } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const navigate = useNavigate();
@@ -18,12 +18,6 @@ const Header = () => {
     setMenuOpen(false);
     setCartOpen(false);
   }, [location.pathname]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("user"); // limpa o storage
-    setUser(null);                   // limpa o estado global
-    navigate("/login");              // redireciona
-  };
 
   const toggleMenu = () => {
     setMenuOpen(prev => {
@@ -59,13 +53,13 @@ const Header = () => {
         <a onClick={() => { navigate('/profile'); setMenuOpen(false);}}>Perfil</a>
         <a onClick={() => { navigate('/settings'); setMenuOpen(false);}}>Configurações</a>
 
-        <a onClick={handleLogout} className="a-logout">Sair</a>
+        <a onClick={logout} className="a-logout">Sair</a>
       </nav>
 
       <div className="header-right">
         <Cart open={cartOpen} toggleOpen={toggleCart} />
-        <button onClick={handleLogout} className="logout-button">
-          <img src={logOut} alt="Sair" />
+        <button onClick={logout} className="logout-button">
+          <img src={logOutIcon} alt="Sair" />
         </button>
         <button className="menu-toggle" onClick={toggleMenu}>
           <img src={menuIcon} alt="Menu" />

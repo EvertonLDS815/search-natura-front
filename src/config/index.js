@@ -5,32 +5,38 @@ const api = axios.create({
   baseURL: 'https://search-natura.vercel.app',
 });
 
-// interceptor de request
+// 🔹 Request
 api.interceptors.request.use(
   (config) => {
-    
-  const token = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// interceptor de response
+// 🔹 Response
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const status = error.response?.status;
-    const message = error.response?.data?.message;
 
-    // 🔐 só desloga se o token for realmente inválido
-    if (status === 401 && message === 'Token inválido') {
+    // 🔥 Se não tem response → é erro de rede (offline)
+    if (!error.response) {
+      return Promise.reject(error);
+    }
+
+    const { status, data } = error.response;
+
+    // 🔐 Só desloga se for token inválido real
+    if (status === 401 && data?.message === 'Token inválido') {
       localStorage.removeItem('token');
-      localStorage.removeItem('user');
       redirectToLogin();
     }
+
     return Promise.reject(error);
   }
 );

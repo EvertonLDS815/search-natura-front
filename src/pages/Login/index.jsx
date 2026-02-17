@@ -24,7 +24,7 @@ const Login = () => {
       const { data } = await api.post("/login", { login, password });
 
       // salva token
-      localStorage.setItem("user", data.token);
+      localStorage.setItem("token", data.token);
 
       // fetch do usuário logado e atualiza contexto
       await fetchUser();   // já vai chamar setUser dentro do UserContext

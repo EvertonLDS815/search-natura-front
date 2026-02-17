@@ -19,43 +19,62 @@ const Product = () => {
   const normalize = (str) =>
     str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-  useEffect(() => {
-    fetchCategories();
-    fetchProducts();
-  }, []);
 
   useEffect(() => {
-    const handleStorage = (event) => {
-      if (event.key === "reloadProducts") {
-        fetchProducts();
-      }
+    const handleOnline = () => {
+      console.log("Voltou conexão - atualizando produtos...");
     };
+    fetchProducts();
+    fetchCategories();
 
-    window.addEventListener("storage", handleStorage);
+    window.addEventListener("online", handleOnline);
 
-    return () => window.removeEventListener("storage", handleStorage);
+    return () => window.removeEventListener("online", handleOnline);
   }, []);
-
-
 
   const fetchCategories = async () => {
-    try {
-      const { data } = await api.get("/categories");
-      setCategories(data);
-    } catch (error) {
-      console.error("Erro categorias:", error);
+  if (!navigator.onLine) {
+    const cached = localStorage.getItem("categories-cache");
+
+    if (cached) {
+      setCategories(JSON.parse(cached));
     }
-  };
+
+    return;
+  }
+
+  try {
+    const { data } = await api.get("/categories");
+    setCategories(data);
+    localStorage.setItem("categories-cache", JSON.stringify(data));
+  } catch (error) {
+    console.error("Erro categorias:", error);
+
+    const cached = localStorage.getItem("categories-cache");
+    if (cached) {
+      setCategories(JSON.parse(cached));
+    }
+  }
+};
+
 
   const fetchProducts = async () => {
     try {
       const { data } = await api.get("/products");
+
+      console.log("Produtos recebidos:", data); // 👈 veja se aparece
+
       setAllProducts(data);
       setFilteredProducts(data);
+
+      localStorage.setItem("products-cache", JSON.stringify(data));
+      console.log("Cache salvo!");
+
     } catch (error) {
       console.error("Erro produtos:", error);
     }
   };
+
 
   useEffect(() => {
     let filtered = [...allProducts];
