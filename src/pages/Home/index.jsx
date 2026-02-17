@@ -32,6 +32,7 @@ const Home = () => {
 
       setAllProducts(data);
       localStorage.setItem("products-cache", JSON.stringify(data));
+      console.log("Produtos guardados:", data);
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
 
@@ -48,6 +49,7 @@ const Home = () => {
       const cached = localStorage.getItem("categories-cache");
       if (cached) {
         setCategories(JSON.parse(cached));
+        console.log("Categorias carregadas do cache:", JSON.parse(cached));
       }
       return;
     }
