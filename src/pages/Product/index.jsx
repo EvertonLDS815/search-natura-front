@@ -21,16 +21,24 @@ const Product = () => {
 
 
   useEffect(() => {
-    const handleOnline = () => {
-      console.log("Voltou conexão - atualizando produtos...");
+    const loadInitialData = async () => {
+      await fetchCategories();
+      await fetchProducts();
     };
-    fetchProducts();
-    fetchCategories();
+
+    loadInitialData();
+
+    const handleOnline = () => {
+      console.log("Conexão restaurada. Atualizando dados...");
+      fetchCategories();
+      fetchProducts();
+    };
 
     window.addEventListener("online", handleOnline);
 
     return () => window.removeEventListener("online", handleOnline);
   }, []);
+
 
   const fetchCategories = async () => {
   if (!navigator.onLine) {
@@ -59,21 +67,38 @@ const Product = () => {
 
 
   const fetchProducts = async () => {
-    try {
-      const { data } = await api.get("/products");
+  if (!navigator.onLine) {
+    const cached = localStorage.getItem("products-cache");
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      setAllProducts(parsed);
+      setFilteredProducts(parsed);
+      console.log("Produtos carregados do cache");
+    }
+    return;
+  }
 
-      console.log("Produtos recebidos:", data); // 👈 veja se aparece
+  try {
+    const { data } = await api.get("/products");
 
       setAllProducts(data);
       setFilteredProducts(data);
 
       localStorage.setItem("products-cache", JSON.stringify(data));
-      console.log("Cache salvo!");
-
+      console.log("Produtos atualizados do servidor");
     } catch (error) {
       console.error("Erro produtos:", error);
+
+      const cached = localStorage.getItem("products-cache");
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        setAllProducts(parsed);
+        setFilteredProducts(parsed);
+        console.log("Fallback para cache");
+      }
     }
   };
+
 
 
   useEffect(() => {
