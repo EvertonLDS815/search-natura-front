@@ -5,6 +5,7 @@
   padding: 1rem;
   max-width: 280px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
 }
 
 .content-product:hover {
@@ -47,9 +48,9 @@
 .content-product-actions {
   display: flex;
   justify-content: space-between;
-  align-items: inherit;
+  align-items: center;
   width: 100%;
-  margin-top: 0.8rem;
+  margin-top: 0.5rem;
 }
 
 .content-product-actions span {
@@ -59,21 +60,15 @@
 }
 
 .btn-add-cart {
-  background-color: #28a745;
+  background-color: green;
   height: 30px;
   width: 34px;
   color: white;
   border: none;
   padding: 0.4rem 0.8rem;
-  margin-top: 0.6rem;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-.btn-add-cart {
-  background: green;
-  color: white;
 }
 
 .btn-edit {
@@ -110,4 +105,10 @@
 .normal-price {
   color: #333;
   font-weight: bold;
+}
+
+@media (max-width: 420px) {
+  .content-product {
+    padding: 1rem 0.8rem;
+  }
 }

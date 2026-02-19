@@ -95,15 +95,14 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
           <span className="normal-price">{FormatCurrency(price)}</span>
         )}
 
-        {mode === "cart" && (
           <button
             className="btn-add-cart"
+            style={mode === "admin" ? {position: 'absolute', bottom: '10px', right: '10px'} : {}}
             onClick={() => addToCart({ ...product, price: isOnSale ? salePrice : price })}
             title="Adicionar ao carrinho"
           >
             +
           </button>
-        )}
 
         {mode === "admin" && (
           <div className="admin-buttons">
@@ -117,7 +116,7 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
           </div>
         )}
       </div>
-        {mode === "admin" && <span style={{color: '#39a339', fontWeight: 600}}>Código: {product.code}</span>}
+        {mode === "admin" && <span style={{color: '#39a339', fontWeight: 600}}>Code: {product.code}</span>}
     </div>
   );
 };
