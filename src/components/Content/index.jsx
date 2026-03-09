@@ -80,7 +80,7 @@ const Content = ({ product, mode = "cart", onFetchProducts }) => {
       <div className="content-product-info">
         <h3 style={product.stock === 0 ? {color: '#d32f2f'} : {color: 'black'}}>{product.name}</h3>
         <a href={product.imageURL} target="_blank" rel="noopener noreferrer">
-          <img src={product.imageURL} alt={product.name} />
+          <img src={product.imageURL} alt={product.name} style={product.stock === 0 ? {opacity: 1} : {opacity: 1}} />
         </a>
       </div>
 

@@ -1,73 +1,20 @@
 // Home.js
-import { useState, useEffect } from 'react';
-import api from '../../config';
+import { useState, useEffect, useContext } from 'react';
 import './style.css';
 import Content from '../../components/Content';
 import Header from '../../components/Header';
+import { CateProdContext } from '../../context/CateProd';
 
 const Home = () => {
-  const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
+
+  const {fetchCategories, fetchProducts, categories, allProducts} = useContext(CateProdContext);
   // 🔥 Função para remover acentos
   const normalize = (str) =>
     str?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() || "";
-
-  // 🔥 Buscar produtos
-  const fetchProducts = async () => {
-    if (!navigator.onLine) {
-      const cached = localStorage.getItem("products-cache");
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        setAllProducts(parsed);
-      }
-      return;
-    }
-
-    try {
-      const { data } = await api.get('/products');
-
-      setAllProducts(data);
-      localStorage.setItem("products-cache", JSON.stringify(data));
-      console.log("Produtos guardados:", data);
-    } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
-
-      const cached = localStorage.getItem("products-cache");
-      if (cached) {
-        setAllProducts(JSON.parse(cached));
-      }
-    }
-  };
-
-  // 🔥 Buscar categorias
-  const fetchCategories = async () => {
-    if (!navigator.onLine) {
-      const cached = localStorage.getItem("categories-cache");
-      if (cached) {
-        setCategories(JSON.parse(cached));
-        console.log("Categorias carregadas do cache:", JSON.parse(cached));
-      }
-      return;
-    }
-
-    try {
-      const { data } = await api.get('/categories');
-      setCategories(data);
-      localStorage.setItem("categories-cache", JSON.stringify(data));
-    } catch (error) {
-      console.error('Erro ao buscar categorias:', error);
-
-      const cached = localStorage.getItem("categories-cache");
-      if (cached) {
-        setCategories(JSON.parse(cached));
-      }
-    }
-  };
-
   // 🔥 Carregar dados iniciais + atualizar ao voltar conexão
   useEffect(() => {
     fetchCategories();
