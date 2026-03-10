@@ -37,7 +37,9 @@ const Header = () => {
 
 
   return (
+  <>
     <header className="header">
+
       <div className="header-left" onClick={() => navigate("/home")}>
         {user?.imageURL ? (
           <img src={user.imageURL} alt={user.name} className="user-image" />
@@ -47,7 +49,8 @@ const Header = () => {
         <span>{user?.name || "Usuário"}</span>
       </div>
 
-      <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+      
+      <nav className={`menu-drawer ${menuOpen ? "open" : ""}`}>
         <a onClick={() => { navigate('/home'); setMenuOpen(false);}}>Home</a>
         <a onClick={() => { navigate('/products'); setMenuOpen(false);}}>Produtos</a>
         <a onClick={() => { navigate('/profile'); setMenuOpen(false);}}>Perfil</a>
@@ -58,15 +61,27 @@ const Header = () => {
 
       <div className="header-right">
         <Cart open={cartOpen} toggleOpen={toggleCart} />
+
         <button onClick={logout} className="logout-button">
           <img src={logOutIcon} alt="Sair" />
         </button>
+
         <button className="menu-toggle" onClick={toggleMenu}>
           <img src={menuIcon} alt="Menu" />
         </button>
       </div>
+
     </header>
-  );
+
+    {menuOpen && (
+      <div
+        className="menu-overlay"
+        onClick={() => setMenuOpen(false)}
+      ></div>
+    )}
+
+  </>
+);
 };
 
 export default Header;

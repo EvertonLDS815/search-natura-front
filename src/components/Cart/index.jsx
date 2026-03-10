@@ -6,9 +6,11 @@ import Trash from "../../assets/trash.svg";
 import "./style.css";
 import api from "../../config";
 import { toast } from "react-toastify";
+import { CateProdContext } from "../../context/CateProd";
 
 const Cart = ({ open, toggleOpen }) => {
   const { cart, removeFromCart, clearCart } = useContext(CartContext);
+  const { fetchProducts } = useContext(CateProdContext);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   // Função para retornar o preço correto (promo ou normal)
@@ -27,6 +29,8 @@ const Cart = ({ open, toggleOpen }) => {
 
     toast.success('Venda realizada com sucesso!');
     clearCart(); // 🔥 ISSO atualiza a UI
+
+    fetchProducts(); // 🔥 ISSO atualiza o estoque na Home/Products
 
   } catch (error) {
     const message =
@@ -47,6 +51,9 @@ const handleCheckin = async () => {
 
     toast.success('Entrada registrada com sucesso!');
     clearCart();
+    
+    fetchProducts();
+
   } catch (err) {
     const message =
       err.response?.data?.message ||

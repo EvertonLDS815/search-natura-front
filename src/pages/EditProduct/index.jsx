@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import api from "../../config";
 import Header from "../../components/Header";
 import "./style.css";
 import { toast } from "react-toastify";
+import { CateProdContext } from "../../context/CateProd";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -16,10 +17,11 @@ const EditProduct = () => {
     category: "",
     imageURL: ""
   });
-  const [categories, setCategories] = useState([]);
   const [preview, setPreview] = useState(null);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const {fetchCategories, categories} = useContext(CateProdContext);
 
   useEffect(() => {
     fetchProduct();
@@ -43,15 +45,6 @@ const EditProduct = () => {
     } catch (err) {
       console.error("Erro ao buscar produto:", err);
       alert("Erro ao carregar produto.");
-    }
-  };
-
-  const fetchCategories = async () => {
-    try {
-      const { data } = await api.get("/categories");
-      setCategories(data);
-    } catch (error) {
-      console.error("Erro ao carregar categorias:", error);
     }
   };
 
