@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { CateProdContext } from "../../context/CateProd";
 
 const Cart = ({ open, toggleOpen }) => {
-  const { cart, removeFromCart, clearCart } = useContext(CartContext);
+  const { cart, removeFromCart, clearCart, setCartOpen } = useContext(CartContext);
   const { fetchProducts } = useContext(CateProdContext);
   const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -31,6 +31,7 @@ const Cart = ({ open, toggleOpen }) => {
     clearCart(); // 🔥 ISSO atualiza a UI
 
     fetchProducts(); // 🔥 ISSO atualiza o estoque na Home/Products
+    setCartOpen(false); // fecha o carrinho após finalizar venda
 
   } catch (error) {
     const message =
@@ -53,12 +54,14 @@ const handleCheckin = async () => {
     clearCart();
     
     fetchProducts();
+    setCartOpen(false);
 
   } catch (err) {
     const message =
       err.response?.data?.message ||
       'Erro ao registrar entrada!';
     toast.error(message);
+    
   }
 }
 

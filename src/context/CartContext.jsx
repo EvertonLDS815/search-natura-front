@@ -4,12 +4,15 @@ import { toast } from "react-toastify";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  const [cartOpen, setCartOpen] = useState(false);
+  
   const [cart, setCart] = useState(() => {
     const saved = localStorage.getItem("cart");
     return saved ? JSON.parse(saved) : [];
   });
 
   // 🔁 sincroniza carrinho com localStorage
+  
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
@@ -29,11 +32,13 @@ export const CartProvider = ({ children }) => {
       return [...prev, { ...product, quantity: 1 }];
     });
 
-    toast.success("Adicionado!", {
-      autoClose: 1100,
-      position: "bottom-right",
-      theme: "dark"
-    });
+    if (window.innerWidth > 768) {
+      toast.success("Adicionado!", {
+        autoClose: 1100,
+        position: "bottom-right",
+        theme: "dark"
+      });
+    }
   };
 
   const removeFromCart = (id) => {
@@ -52,7 +57,9 @@ export const CartProvider = ({ children }) => {
         cart,
         addToCart,
         removeFromCart,
-        clearCart
+        clearCart,
+        cartOpen,
+        setCartOpen
       }}
     >
       {children}

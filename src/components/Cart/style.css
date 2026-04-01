@@ -153,6 +153,7 @@
 @media (max-width: 600px) {
   .cart-dropdown {
     width: 100vw;
+    border-radius: 0 0 8px 8px;
     right: -62px;
     top: 49px;
   }

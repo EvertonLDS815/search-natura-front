@@ -5,11 +5,12 @@ import Cart from "../Cart";
 import logOutIcon from "../../assets/log-out.svg";
 import menuIcon from "../../assets/menu.svg";
 import "./style.css";
+import { CartContext } from "../../context/CartContext";
 
 const Header = () => {
   const { user, logout } = useContext(UserContext);
+  const {cartOpen, setCartOpen} = useContext(CartContext);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
